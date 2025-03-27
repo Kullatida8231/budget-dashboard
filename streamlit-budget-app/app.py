@@ -10,7 +10,7 @@ st.set_page_config(page_title="Dashboard งบประมาณ", layout="wide
 # --- โหลดข้อมูลจาก Excel ---
 @st.cache_data
 def load_data():
-    file_path = "streamlit-budget-app/q1-68.xlsx"
+    file_path = "q1-68.xlsx"
     df = pd.read_excel(file_path, dtype=str, engine="openpyxl")
 
     # แปลงคอลัมน์ตัวเลข
