@@ -1148,13 +1148,16 @@ show_grand_total(*get_grand_total(df_grouped_invest), disb_thres=17, spend_thres
 
 #----------------------------------------------------------------------------------
 st.markdown("""
-    <hr style='margin-top:3rem; margin-bottom:1rem;'>
-
     <div style='
+        background-color: #f5f5f5;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-top: 3rem;
+        margin-bottom: 1rem;
         text-align: center;
         font-size: 20px;
         font-weight: 500;
-        color: white;
+        color: #333;
     '>
         Need help? Contact us!<br>
         📞 Call: +66 2 242 5900 ext. 7420<br>
@@ -1164,13 +1167,16 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown("""
-    <hr style='margin-top:3rem; margin-bottom:1rem;'>
-
     <div style='
+        background-color: #f5f5f5;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-top: 1rem;
+        margin-bottom: 3rem;
         text-align: center;
         font-size: 20px;
         font-weight: 500;
-        color: white;
+        color: #333;
     '>
         สอบถามเพิ่มเติม<br>
         📞 ติดต่อ: +66 2 242 5900 ต่อ 7420<br>
