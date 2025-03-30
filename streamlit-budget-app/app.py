@@ -1152,9 +1152,9 @@ st.markdown("""
 
     <div style='
         text-align: center;
-        font-size: 16px;
+        font-size: 20px;
         font-weight: 500;
-        color: #333;
+        color: white;
     '>
         Need help? Contact us!<br>
         📞 Call: +66 2 242 5900 ext. 7420<br>
@@ -1168,9 +1168,9 @@ st.markdown("""
 
     <div style='
         text-align: center;
-        font-size: 16px;
+        font-size: 20px;
         font-weight: 500;
-        color: #333;
+        color: white;
     '>
         สอบถามเพิ่มเติม<br>
         📞 ติดต่อ: +66 2 242 5900 ต่อ 7420<br>
