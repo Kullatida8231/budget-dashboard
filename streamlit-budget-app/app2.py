@@ -10,8 +10,11 @@ import io
 st.set_page_config(page_title="Dashboard งบประมาณ", layout="wide")
 
 # --- โหลดข้อมูลจาก Excel ---
+@st.cache_data
 def load_data():
-    df = pd.read_excel("q1-68.xlsx", dtype=str, engine="openpyxl")
+    file_path = "streamlit-budget-app/q1-68.xlsx"
+    df = pd.read_excel(file_path, dtype=str, engine="openpyxl")
+
     # แปลงคอลัมน์ตัวเลข
     num_cols = ["พรบ.", "งบฯ หลังโอน", "เบิกจ่าย", "%เบิกจ่าย", "ใช้จ่าย", "%ใช้จ่าย"]
     df[num_cols] = df[num_cols].apply(pd.to_numeric, errors='coerce')
