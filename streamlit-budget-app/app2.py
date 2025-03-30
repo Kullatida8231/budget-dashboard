@@ -36,7 +36,7 @@ if df1.empty:
 st.markdown("""
     <div style='
         background-color: #AC1B1F;
-        color: black;
+        color: white;
         text-align: center;
         padding: 1rem;
         font-size: 30px;
@@ -87,7 +87,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-st.markdown("<div class='uniform-font'>1️⃣🟠ภาพรวมทั้งประเทศ</div>", unsafe_allow_html=True)
+st.markdown("<div class='uniform-font'>1️⃣ภาพรวมทั้งประเทศ</div>", unsafe_allow_html=True)
 
 def colored_text(value, color):
     return f"<span class='uniform-percent' style='color:{color}'>{value:.2f} %</span>"
