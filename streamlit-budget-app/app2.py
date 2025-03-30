@@ -24,11 +24,14 @@ def load_data():
     df["งบฯ หลังโอน(ล้านบาท)"] = df["งบฯ หลังโอน"] / 1_000_000
     df["เบิกจ่าย(ล้านบาท)"] = df["เบิกจ่าย"] / 1_000_000
     df["ใช้จ่าย(ล้านบาท)"] = df["ใช้จ่าย"] / 1_000_000
+    
+    st.write("Columns in dataframe:", df.columns.tolist())
 
     return df
 
 # โหลดข้อมูล
 df1 = load_data()
+st.dataframe(df1)
 
 # --- ตรวจสอบว่ามีข้อมูลก่อน ---
 if df1.empty:
