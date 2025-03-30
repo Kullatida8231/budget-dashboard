@@ -5,17 +5,16 @@ import io
 #from IPython.display import display, Markdown
     
 #-------------------------------------------------------------------------------
-
-# --- ตั้งค่าหน้าเว็บ ---
+# ตั้งค่า Streamlit
 st.set_page_config(page_title="Dashboard งบประมาณ", layout="wide")
 
-# --- โหลดข้อมูลจาก Excel ---
-file_url = "https://raw.githubusercontent.com/Kullatida8231/budget-dashboard/main/streamlit-budget-app/q1-68.xlsx"
+# --- โหลดข้อมูลจาก Google Sheets แบบ .xlsx ---
+file_url = "https://docs.google.com/spreadsheets/d/11myYSJDxppqTzBlztmbZMdrjKgMpjPZC/export?format=xlsx"
 
 @st.cache_data
 def load_data():
     df = pd.read_excel(file_url, dtype=str, engine="openpyxl")
-    
+
     # แปลงตัวเลข
     num_cols = ["พรบ.", "งบฯ หลังโอน", "เบิกจ่าย", "ร้อยละ", "ใช้จ่าย", "ใช้จ่าย"]
     df[num_cols] = df[num_cols].apply(pd.to_numeric, errors='coerce')
@@ -25,9 +24,10 @@ def load_data():
     df["งบฯ หลังโอน(ล้านบาท)"] = df["งบฯ หลังโอน"] / 1_000_000
     df["เบิกจ่าย(ล้านบาท)"] = df["เบิกจ่าย"] / 1_000_000
     df["ใช้จ่าย(ล้านบาท)"] = df["ใช้จ่าย"] / 1_000_000
-    
+
     return df
 
+# โหลดข้อมูล
 df1 = load_data()
 
 # --- ตรวจสอบว่ามีข้อมูลก่อน ---
