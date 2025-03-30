@@ -23,6 +23,7 @@ def load_data():
 
     # กำหนดชื่อคอลัมน์ที่ต้องการแปลงเป็นตัวเลข
     num_cols = ["พรบ.", "งบฯ หลังโอน", "เบิกจ่าย", "%เบิกจ่าย", "ใช้จ่าย", "%ใช้จ่าย"]
+    df[num_cols] = df[num_cols].apply(pd.to_numeric, errors='coerce')
 
     # ตรวจสอบว่าคอลัมน์เหล่านี้มีจริง
     missing_cols = [col for col in num_cols if col not in df.columns]
