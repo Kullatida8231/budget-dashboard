@@ -11,10 +11,7 @@ st.set_page_config(page_title="Dashboard งบประมาณ", layout="wide
 
 # --- โหลดข้อมูลจาก Excel ---
 def load_data():
-    url = "https://onedrive.live.com/download?resid=ATF7SE6JLWMJOAFW%21129"
-    r = requests.get(url)
-    df = pd.read_excel(io.BytesIO(r.content), dtype=str, engine="openpyxl")
-
+    df = pd.read_excel("q1-68.xlsx", dtype=str, engine="openpyxl")
     # แปลงคอลัมน์ตัวเลข
     num_cols = ["พรบ.", "งบฯ หลังโอน", "เบิกจ่าย", "%เบิกจ่าย", "ใช้จ่าย", "%ใช้จ่าย"]
     df[num_cols] = df[num_cols].apply(pd.to_numeric, errors='coerce')
