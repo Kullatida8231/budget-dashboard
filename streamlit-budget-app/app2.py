@@ -8,10 +8,10 @@ import pandas as pd
 st.set_page_config(page_title="Dashboard งบประมาณ", layout="wide")
 
 # --- โหลดข้อมูลจาก Excel ---
-@st.cache_data
 def load_data():
-    file_path = "q1-68.xlsx"
-    df = pd.read_excel(file_path, dtype=str, engine="openpyxl")
+    url = "https://onedrive.live.com/download?resid=ATF7SE6JLWMJOAFW%21129"
+    r = requests.get(url)
+    df = pd.read_excel(io.BytesIO(r.content), dtype=str, engine="openpyxl")
 
     # แปลงคอลัมน์ตัวเลข
     num_cols = ["พรบ.", "งบฯ หลังโอน", "เบิกจ่าย", "%เบิกจ่าย", "ใช้จ่าย", "%ใช้จ่าย"]
