@@ -35,7 +35,7 @@ if df1.empty:
 st.markdown("""
     <div style='
         background-color: #AC1B1F;
-        color: grey;
+        color: white;
         text-align: center;
         padding: 1rem;
         font-size: 30px;
