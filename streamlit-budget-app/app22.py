@@ -3,7 +3,29 @@ import pandas as pd
 #from IPython.display import display, Markdown
     
 #-------------------------------------------------------------------------------
+import streamlit as st
+import streamlit_authenticator as stauth
 
+# รายชื่อผู้ใช้
+names = ['PBO']
+usernames = ['PBO']
+passwords = ['PBO1234']  # สามารถแปลงเป็น hashed password ได้เพื่อความปลอดภัย
+
+hashed_passwords = stauth.Hasher(passwords).generate()
+
+authenticator = stauth.Authenticate(names, usernames, hashed_passwords, 'app_cookie', 'random_key', cookie_expiry_days=1)
+
+name, authentication_status, username = authenticator.login('Login', 'main')
+
+if authentication_status:
+    st.write(f'ยินดีต้อนรับ {name}')
+    # ใส่เนื้อหาแอปที่ต้องการแสดงหลังล็อกอินที่นี่
+elif authentication_status == False:
+    st.error('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง')
+elif authentication_status == None:
+    st.warning('กรุณากรอกชื่อผู้ใช้และรหัสผ่าน')
+
+#-------------------------------------------------------------------------------
 # --- ตั้งค่าหน้าเว็บ ---
 st.set_page_config(page_title="Dashboard งบประมาณ", layout="wide")
 
@@ -36,7 +58,7 @@ if df1.empty:
 st.markdown("""
     <div style='
         background-color: #AC1B1F;
-        color: pink;
+        color: purple;
         text-align: center;
         padding: 1rem;
         font-size: 30px;
