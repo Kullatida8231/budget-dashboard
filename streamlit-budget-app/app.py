@@ -167,17 +167,19 @@ color_disb_i = "green" if percent_disb_i > 17 else "red"
 color_spend_i = "green" if percent_spend_i > 39 else "red"
 
 col1, col2, col3 = st.columns(3)
+
 with col1:
     st.metric("พรบ. (ลงทุน)", f"{prb_i:,.4f}")
-    st.metric("ใช้จ่าย", f"{spend_i:,.4f}")
-with col2:
     st.metric("งบฯ หลังโอน", f"{after_i:,.4f}")
-    st.markdown("<div class='metric-label'> %เบิกจ่าย</div>", unsafe_allow_html=True)
-    st.markdown(colored_text(percent_disb_i, color_disb_i), unsafe_allow_html=True)
-with col3:
+
+with col2:
     st.metric("เบิกจ่าย", f"{disb_i:,.4f}")
-    st.markdown("<div class='metric-label'> %ใช้จ่าย</div>", unsafe_allow_html=True)
     st.markdown(colored_text(percent_spend_i, color_spend_i), unsafe_allow_html=True)
+
+with col3:
+    st.metric("ใช้จ่าย", f"{spend_i:,.4f}")
+    st.markdown("<div class='metric-label'> %ใช้จ่าย</div>", unsafe_allow_html=True)
+
 
 
 
