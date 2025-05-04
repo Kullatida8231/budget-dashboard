@@ -4,7 +4,6 @@ import pandas as pd
 # ตั้งค่าหน้าเว็บ
 st.set_page_config(page_title="Dashboard งบประมาณ", layout="wide")
 
-# 🔤 เพิ่ม CSS เพื่อให้รองรับฟอนต์ภาษาไทย
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Sarabun&display=swap');
@@ -12,8 +11,19 @@ st.markdown("""
     html, body, [class*="css"]  {
         font-family: 'Sarabun', sans-serif;
     }
+
+    /* ครอบคลุม dataframe ด้วย */
+    .stDataFrame div {
+        font-family: 'Sarabun', sans-serif !important;
+    }
+
+    /* ครอบคลุม markdown และ widget อื่น ๆ */
+    .stMarkdown, .stTextInput, .stSelectbox, .stTextArea, .stExpander, .stButton {
+        font-family: 'Sarabun', sans-serif !important;
+    }
     </style>
 """, unsafe_allow_html=True)
+
 
 # โหลดข้อมูล
 @st.cache_data
