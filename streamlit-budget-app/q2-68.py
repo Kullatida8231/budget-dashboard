@@ -95,7 +95,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 st.markdown("""
 <div style='text-align: left; font-size: 14px; font-weight: normal; margin-bottom: 10px;'>
-2. เบิกจ่าย คือ มูลลค่าการเบิกจ่ายทั้งสิ้นที่ส่วนราชการเบิกจ่ายเองและส่วนราชการอื่นเบิกแทนให้ 
+2. เบิกจ่าย คือ มูลค่าการเบิกจ่ายทั้งสิ้นที่ส่วนราชการเบิกจ่ายเองและส่วนราชการอื่นเบิกแทนให้ 
 </div>
 """, unsafe_allow_html=True)
 st.markdown("""
