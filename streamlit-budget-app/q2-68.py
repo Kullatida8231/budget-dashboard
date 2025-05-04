@@ -1,6 +1,18 @@
 import streamlit as st
 import pandas as pd
 
+
+# 🔤 เพิ่ม CSS เพื่อให้รองรับฟอนต์ภาษาไทย
+st.markdown("""
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Sarabun&display=swap');
+
+    html, body, [class*="css"]  {
+        font-family: 'Sarabun', sans-serif;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # ตั้งค่าหน้าเว็บ
 st.set_page_config(page_title="Dashboard งบประมาณ", layout="wide")
 
