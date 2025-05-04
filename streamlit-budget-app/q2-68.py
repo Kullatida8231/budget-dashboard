@@ -14,6 +14,7 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
+
 # โหลดข้อมูล
 @st.cache_data
 def load_data():
