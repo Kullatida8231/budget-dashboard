@@ -890,7 +890,7 @@ if show_footer:
 
     with col1:
         st.markdown("""
-        #### Need help? Contact us!  
+        #### Contact us  
         📞 **Call**: +66 2 242 5900 ext. 7420  
         📧 **Email**: [pbo@parliament.go.th](mailto:pbo@parliament.go.th)  
         💬 **LINE ID**: @thaipbo
