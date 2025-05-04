@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 
+# ตั้งค่าหน้าเว็บ
+st.set_page_config(page_title="Dashboard งบประมาณ", layout="wide")
 
 # 🔤 เพิ่ม CSS เพื่อให้รองรับฟอนต์ภาษาไทย
 st.markdown("""
@@ -12,10 +14,6 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
-
-# ตั้งค่าหน้าเว็บ
-st.set_page_config(page_title="Dashboard งบประมาณ", layout="wide")
-
 # โหลดข้อมูล
 @st.cache_data
 def load_data():
