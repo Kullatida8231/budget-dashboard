@@ -182,7 +182,7 @@ st.markdown("""
 
 st.markdown("""
 <div style='text-align: left; font-size: 14px; font-weight: normal; margin-bottom: 10px;'>
-ตั้งค่าสีพื้นหลังจอแสดงผล
+⚙️ ตั้งค่าสีพื้นหลังจอแสดงผล
 </div>
 """, unsafe_allow_html=True)
 st.markdown("""
