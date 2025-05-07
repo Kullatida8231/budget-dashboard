@@ -179,6 +179,14 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<div style='text-align: left; font-size: 14px; font-weight: bold; margin-bottom: 10px; color: red;'>
+ตั้งค่าสีพื้นหลังจอแสดงผล
+1. คลิกที่จุดสามจุดมุมบนขวา
+2. เลือก "Choose app theme, colors and front"
+หรือ 3. ตั้งค่าสีเองโดยเลือก "Edit active theme"
+</div>
+""", unsafe_allow_html=True)
 
 st.markdown("<br>", unsafe_allow_html=True)
 
