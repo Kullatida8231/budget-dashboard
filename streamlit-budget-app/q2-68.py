@@ -222,7 +222,7 @@ def show_metrics(data, title):
 
     with col1:
         st.markdown(small_metric("พ.ร.บ.", prb), unsafe_allow_html=True)
-        st.markdown(small_metric("งบฯ หลังโอนฯ", after), unsafe_allow_html=True)
+        st.markdown(small_metric("งบฯ หลังโอน", after), unsafe_allow_html=True)
     with col2:
         st.markdown(small_metric("เบิกจ่าย", disb), unsafe_allow_html=True)
         st.markdown(small_metric("%เบิกจ่าย", per_disb, is_percent=True, threshold=disb_threshold), unsafe_allow_html=True)
