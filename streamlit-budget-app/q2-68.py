@@ -79,7 +79,6 @@ st.markdown("""
     }
     </style>
     <div class='header-main'>ผลการเบิกจ่ายและใช้จ่ายงบประมาณ ณ สิ้นสุดไตรมาสที่ 2 ปีงบประมาณ พ.ศ. 2568</div>
-    <div class='header-sub'>⚠️ อยู่ระหว่างการพัฒนาระบบ (Under development) ⚠️</div>
 """, unsafe_allow_html=True)
 #-----------------------------
 st.markdown("""
