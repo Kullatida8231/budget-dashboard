@@ -86,7 +86,7 @@ import streamlit as st
 st.markdown(
     """
     <a href="https://docs.google.com/forms/d/1Kt45668xXpCx07o_k_VuSK3uG7YejpQfyKhNIuOry8M/edit" target="_blank">
-        <div style="display:inline-block; padding:0.5em 1em; background-color:#4CAF50; color:white; border-radius:8px; text-decoration:none; font-weight:bold;">
+        <div style="display:inline-block; padding:0.5em 1em; background-color:#4CAF50; color:white; border-radius:8px; text-decoration:none; font-weight:normal;">
             คลิก เพื่อให้ความเห็นต่อการปรับปรุง
         </div>
     </a>
