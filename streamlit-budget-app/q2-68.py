@@ -189,11 +189,23 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown("<br>", unsafe_allow_html=True)
+import streamlit as st
+
 st.markdown("""
+<style>
+.blink {
+  animation: blinker 1s linear infinite;
+}
+@keyframes blinker {
+  50% { opacity: 0; }
+}
+</style>
+
 <div style='text-align: left; font-size: 24px; font-weight: bold; margin-bottom: 10px; color: red;'>
- ⬅ กรุณาเลือกหัวข้อจากแท็บด้านซ้าย
+  <span class="blink">⬅ กรุณาเลือกหัวข้อจากแท็บด้านซ้าย</span>
 </div>
 """, unsafe_allow_html=True)
+
 
 import streamlit as st
 
