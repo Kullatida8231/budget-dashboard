@@ -15,7 +15,7 @@ html, body, [class*="css"] {
 """, unsafe_allow_html=True)
 
 # ✅ เมนู Slide Bar
-selected_menus = st.sidebar.multiselect("📌 เลือกหัวข้อ", [
+selected_menus = st.sidebar.multiselect("📌 เลือกหัวข้อ Dashboard", [
     "1️⃣ ภาพรวมทั้งประเทศ",
     "2️⃣ กระทรวง/หน่วยงาน",
     "3️⃣ งบกลาง",
