@@ -202,7 +202,7 @@ st.markdown("""
 </style>
 
 <div style='text-align: left; font-size: 24px; font-weight: bold; margin-bottom: 10px; color: red;'>
-  <span class="blink">⬅ กรุณาเลือกหัวข้อจากแท็บด้านซ้าย</span>
+  <span class="blink">⬅ </span>กรุณาเลือกหัวข้อจากแท็บด้านซ้าย
 </div>
 """, unsafe_allow_html=True)
 
