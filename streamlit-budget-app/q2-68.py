@@ -86,7 +86,7 @@ st.markdown("""
 st.markdown(
     """
     <div style="text-align: right;">
-        <a href="https://docs.google.com/forms/d/1Kt45668xXpCx07o_k_VuSK3uG7YejpQfyKhNIuOry8M/edit" target="_blank">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSccyfjOjT74At6b-Z4DJdbXRFpqShkeFByneYYYFM79w-a-9Q/viewform?fbzx=3214555815538638142" target="_blank">
             <div style="display:inline-block; padding:0.3em 1em; background-color:#4CAF50; color:white; border-radius:8px; text-decoration:none; font-weight:normal;">
                 คลิก เพื่อให้ความเห็นต่อการปรับปรุง
             </div>
