@@ -323,66 +323,6 @@ def get_color(val, threshold):
     return "#00FF9F" if val >= threshold else "#FF4B4B"
 
 # ✅ SECTION 2: กระทรวง/หน่วยงาน
-if "2️⃣ กระทรวง/หน่วยงาน" in selected_menus:
-    st.markdown("## 2️⃣กระทรวง/หน่วยงาน")
-
-    # 🔹 Dropdown สำหรับเลือกกระทรวง
-    ministry_list = df["กระทรวง"].dropna().unique()
-    selected_ministry = st.selectbox("เลือกกระทรวง", sorted(ministry_list))
-
-    # 🔹 Filter ข้อมูล
-    df_min = df[df["กระทรวง"] == selected_ministry]
-    df_reg = df_min[df_min["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายประจำ"]
-    df_inv = df_min[df_min["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายลงทุน"]
-
-    # 🔹 สรุปภาพรวม
-    total_all = compute_summary(df_min)
-    total_regular = compute_summary(df_reg)
-    total_invest = compute_summary(df_inv)
-
-    prb, after, disb, per_disb, spend, per_spend = total_all
-    color_disb = get_color(per_disb, 53)
-    color_spend = get_color(per_spend, 61)
-
-    st.markdown(f"""
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ในภาพรวม **📍{selected_ministry}** ได้รับจัดสรรงบประมาณ **จำนวน {prb:,.4f} ล้านบาท** มีงบประมาณหลังโอนเปลี่ยนแปลง **จำนวน {after:,.4f} ล้านบาท** มีการเบิกจ่าย **จำนวน {disb:,.4f} ล้านบาท**  (คิดเป็น <span style="color:{color_disb}; font-weight:bold;">{per_disb:.2f}%</span> ของ งบฯ หลังโอน) และมีการใช้จ่าย **จำนวน {spend:,.4f} ล้านบาท** (คิดเป็น <span style="color:{color_spend}; font-weight:bold;">{per_spend:.2f}%</span> ขอ งบฯ หลังโอน) ทั้งนี้ สามารถจำแนกงบประมาณรายจ่ายออกเป็น 2 ประเภท ดังนี้
-""", unsafe_allow_html=True)
-
-    # 🔸 รายจ่ายประจำ
-    if not df_reg.empty:
-        prb_r, after_r, disb_r, per_disb_r, spend_r, per_spend_r = total_regular
-        color_disb_r = get_color(per_disb_r, 57)
-        color_spend_r = get_color(per_spend_r, 58)
-        st.markdown(f"""
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **1. รายจ่ายประจำ** ได้รับจัดสรรงบประมาณ **จำนวน {prb_r:,.4f} ล้านบาท** มีงบประมาณหลังโอนเปลี่ยนแปลง **จำนวน {after_r:,.4f} ล้านบาท** โดยมีการเบิกจ่าย **จำนวน {disb_r:,.4f} ล้านบาท** (<span style="color:{color_disb_r}; font-weight:bold;">{per_disb_r:.2f}%</span> ของ งบฯ หลังโอน) และมีการใช้จ่าย **จำนวน {spend_r:,.4f} ล้านบาท** (<span style="color:{color_spend_r}; font-weight:bold;">{per_spend_r:.2f}%</span> ของ งบฯ หลังโอน)
-""", unsafe_allow_html=True)
-
-    # 🔸 รายจ่ายลงทุน
-    if not df_inv.empty:
-        prb_i, after_i, disb_i, per_disb_i, spend_i, per_spend_i = total_invest
-        color_disb_i = get_color(per_disb_i, 35)
-        color_spend_i = get_color(per_spend_i, 66)
-        st.markdown(f"""
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**2. รายจ่ายลงทุน** ได้รับจัดสรรงบประมาณ **จำนวน {prb_i:,.4f} ล้านบาท** มีงบประมาณหลังโอนเปลี่ยนแปลง **จำนวน {after_i:,.4f} ล้านบาท** โดยมีการเบิกจ่าย **จำนวน {disb_i:,.4f} ล้านบาท** (<span style="color:{color_disb_i}; font-weight:bold;">{per_disb_i:.2f}%</span> ของ งบฯ หลังโอน) และมีการใช้จ่าย **จำนวน {spend_i:,.4f} ล้านบาท** (<span style="color:{color_spend_i}; font-weight:bold;">{per_spend_i:.2f}%</span> ของ งบฯ หลังโอน)
-""", unsafe_allow_html=True)
-
-    # 🔸 แสดงตารางภาพรวม
-    st.markdown("### ภาพรวม")
-    st.dataframe(prepare_table(df_min), use_container_width=True)
-
-    # 🔸 รายจ่ายประจำ
-    if not df_reg.empty:
-        st.markdown("### รายจ่ายประจำ")
-        st.dataframe(prepare_table(df_reg), use_container_width=True)
-
-    # 🔸 รายจ่ายลงทุน
-    if not df_inv.empty:
-        st.markdown("### รายจ่ายลงทุน")
-        st.dataframe(prepare_table(df_inv), use_container_width=True)
-
-    st.markdown("<br>", unsafe_allow_html=True)
-#--------------------------------------------------------------
-# ✅ SECTION 2: กระทรวง/หน่วยงาน
 if "2️⃣2️⃣ กระทรวง/หน่วยงาน" in selected_menus:
     st.markdown("## 2️⃣2️⃣กระทรวง/หน่วยงาน")
 
