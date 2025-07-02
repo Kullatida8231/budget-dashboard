@@ -349,7 +349,9 @@ if "2️⃣ กระทรวง/หน่วยงาน" in selected_menus:
 
     # 🔹 Dropdown สำหรับเลือกกระทรวง
     ministry_list = df["กระทรวง"].dropna().unique()
-    selected_ministry = st.selectbox("เลือกกระทรวง", sorted(ministry_list))
+    # selected_ministry = st.selectbox("เลือกกระทรวง", sorted(ministry_list))
+    selected_ministry = st.selectbox("เลือกกระทรวง", sorted(ministry_list), key="ministry_section2")
+
 
     # 🔹 Filter ข้อมูล
     df_min = df[df["กระทรวง"] == selected_ministry]
@@ -870,7 +872,9 @@ if "8️⃣ ผลผลิต/โครงการ (ติดตามรา�
 
     # 🔹 เลือกกระทรวง (ไม่ใช้ text input แล้ว)
     ministry_options = df["กระทรวง"].dropna().unique()
-    selected_ministry = st.selectbox("เลือกกระทรวง", sorted(ministry_options))
+    # selected_ministry = st.selectbox("เลือกกระทรวง", sorted(ministry_options))
+    selected_ministry = st.selectbox("เลือกกระทรวง", sorted(ministry_options), key="ministry_section8")
+
 
     # 🔹 เลือกหน่วยงาน
     df_min = df[df["กระทรวง"] == selected_ministry]
