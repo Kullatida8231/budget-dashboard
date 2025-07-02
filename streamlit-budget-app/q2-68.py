@@ -108,7 +108,7 @@ st.markdown("""
 
 st.markdown("""
 <div style='text-align: left; font-size: 14px; font-weight: normal; margin-bottom: 10px;'>
-1. ข้อมูลผลการเบิกจ่ายงบประมาณและการใช้จ่ายของรัฐ จากระบบ New GFMIS Thai กรมบัญชีกลาง | แสดงข้อมูล ณ ตั้งแต่ต้นปี งปม. ถึงสิ้นเดือนพฤษภาคม ปี งปม. 2568 | เรียกข้อมูล ณ วันที่ 4 มิถุนายน 2568
+1. ข้อมูลผลการเบิกจ่ายงบประมาณและการใช้จ่ายของรัฐ จากระบบ New GFMIS Thai กรมบัญชีกลาง | แสดงข้อมูล ณ ตั้งแต่ต้นปี งปม. ถึงสิ้นเดือนมิถุนายน ปี งปม. 2568 | เรียกข้อมูล ณ วันที่ 1 กรกฎาคม 2568
 </div>
 """, unsafe_allow_html=True)
 st.markdown("""
@@ -126,7 +126,6 @@ st.markdown("""
 4. สีของค่า %เบิกจ่าย และ %ใช้จ่าย ประกอบด้วย "สีแดง" หมายถึง ต่ำกว่าเป้าหมาย และ "สีเขียว" หมายถึง เกินกว่าเป้าหมาย
 </div>
 """, unsafe_allow_html=True)
-
 st.markdown("<br>", unsafe_allow_html=True)
 
 
@@ -241,14 +240,14 @@ def show_metrics(data, title):
 
     # ✅ เกณฑ์สีตามกลุ่ม
     if title == "📊 ภาพรวม":
-        disb_threshold = 53
-        spend_threshold = 61
+        disb_threshold = 75
+        spend_threshold = 80
     elif title == "🏢 รายจ่ายประจำ":
-        disb_threshold = 57
-        spend_threshold = 58
+        disb_threshold = 80
+        spend_threshold = 81
     elif title == "🏗️ รายจ่ายลงทุน":
-        disb_threshold = 35
-        spend_threshold = 66
+        disb_threshold = 54
+        spend_threshold = 77
     else:
         disb_threshold = spend_threshold = 0
 
@@ -337,9 +336,9 @@ def get_color(value, category, target_type):
     target_type: 'เบิกจ่าย' หรือ 'ใช้จ่าย'
     """
     thresholds = {
-        "ภาพรวม": {"เบิกจ่าย": 53, "ใช้จ่าย": 61},
-        "รายจ่ายประจำ": {"เบิกจ่าย": 57, "ใช้จ่าย": 58},
-        "รายจ่ายลงทุน": {"เบิกจ่าย": 35, "ใช้จ่าย": 66},
+        "ภาพรวม": {"เบิกจ่าย": 75, "ใช้จ่าย": 80},
+        "รายจ่ายประจำ": {"เบิกจ่าย": 80, "ใช้จ่าย": 81},
+        "รายจ่ายลงทุน": {"เบิกจ่าย": 54, "ใช้จ่าย": 77},
     }
     threshold = thresholds.get(category, {}).get(target_type, 0)
     return "#00FF9F" if value >= threshold else "#FF4B4B"
@@ -460,17 +459,17 @@ if "3️⃣ งบกลาง" in selected_menus:
 """, unsafe_allow_html=True)
 
     # 🔸 ภาพรวม
-    show_central_table(df_central, "ภาพรวม", disb_thres=53, spend_thres=61)
+    show_central_table(df_central, "ภาพรวม", disb_thres=75, spend_thres=80)
 
     # 🔸 รายจ่ายประจำ
     df_central_reg = df_central[df_central["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายประจำ"]
     if not df_central_reg.empty:
-        show_central_table(df_central_reg, "รายจ่ายประจำ", disb_thres=57, spend_thres=58)
+        show_central_table(df_central_reg, "รายจ่ายประจำ", disb_thres=80, spend_thres=81)
 
     # 🔸 รายจ่ายลงทุน
     df_central_inv = df_central[df_central["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายลงทุน"]
     if not df_central_inv.empty:
-        show_central_table(df_central_inv, "รายจ่ายลงทุน", disb_thres=35, spend_thres=66)
+        show_central_table(df_central_inv, "รายจ่ายลงทุน", disb_thres=54, spend_thres=77)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
@@ -492,8 +491,8 @@ if "4️⃣ แผนบูรณาการ" in selected_menus:
     total_spend = df_plan["ใช้จ่าย"].sum()
     percent_disb = round((total_disb / total_after) * 100, 2) if total_after else 0
     percent_spend = round((total_spend / total_after) * 100, 2) if total_after else 0
-    color_disb = "#00FF9F" if percent_disb >= 53 else "#FF4B4B"
-    color_spend = "#00FF9F" if percent_spend >= 61 else "#FF4B4B"
+    color_disb = "#00FF9F" if percent_disb >= 75 else "#FF4B4B"
+    color_spend = "#00FF9F" if percent_spend >= 80 else "#FF4B4B"
 
     # 🔹 ประจำ
     prb_r = df_reg["พรบ."].sum()
@@ -502,8 +501,8 @@ if "4️⃣ แผนบูรณาการ" in selected_menus:
     spend_r = df_reg["ใช้จ่าย"].sum()
     per_disb_r = round((disb_r / after_r) * 100, 2) if after_r else 0
     per_spend_r = round((spend_r / after_r) * 100, 2) if after_r else 0
-    color_disb_r = "#00FF9F" if per_disb_r >= 57 else "#FF4B4B"
-    color_spend_r = "#00FF9F" if per_spend_r >= 58 else "#FF4B4B"
+    color_disb_r = "#00FF9F" if per_disb_r >= 80 else "#FF4B4B"
+    color_spend_r = "#00FF9F" if per_spend_r >= 81 else "#FF4B4B"
 
     # 🔹 ลงทุน
     prb_i = df_inv["พรบ."].sum()
@@ -512,8 +511,8 @@ if "4️⃣ แผนบูรณาการ" in selected_menus:
     spend_i = df_inv["ใช้จ่าย"].sum()
     per_disb_i = round((disb_i / after_i) * 100, 2) if after_i else 0
     per_spend_i = round((spend_i / after_i) * 100, 2) if after_i else 0
-    color_disb_i = "#00FF9F" if per_disb_i >= 35 else "#FF4B4B"
-    color_spend_i = "#00FF9F" if per_spend_i >= 66 else "#FF4B4B"
+    color_disb_i = "#00FF9F" if per_disb_i >= 54 else "#FF4B4B"
+    color_spend_i = "#00FF9F" if per_spend_i >= 77 else "#FF4B4B"
 
     st.markdown("""<div style='text-align: left; font-size: 18px; font-weight: bold; margin-bottom: 10px;'>🔵 ภาพรวมทุกแผนงานบูรณาการ</div>""", unsafe_allow_html=True)
 
@@ -568,8 +567,8 @@ if "4️⃣ แผนบูรณาการ" in selected_menus:
     total_spend = df_plan_selected["ใช้จ่าย"].sum()
     percent_disb = round((total_disb / total_after) * 100, 2) if total_after else 0
     percent_spend = round((total_spend / total_after) * 100, 2) if total_after else 0
-    color_disb = "#00FF9F" if percent_disb >= 53 else "#FF4B4B"
-    color_spend = "#00FF9F" if percent_spend >= 61 else "#FF4B4B"
+    color_disb = "#00FF9F" if percent_disb >= 75 else "#FF4B4B"
+    color_spend = "#00FF9F" if percent_spend >= 80 else "#FF4B4B"
 
     st.markdown(f"""&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; มีการจัดสรรงบประมาณสำหรับ**📝{selected_plan}**  จำนวน **{total_prb:,.4f} ล้านบาท**  มีงบประมาณหลังโอนเปลี่ยนแปลง จำนวน **{total_after:,.4f} ล้านบาท**  มีการเบิกจ่าย จำนวน **{total_disb:,.4f} ล้านบาท**  (คิดเป็น <span style="color:{color_disb}; font-weight:bold;">{percent_disb:.2f}%</span> ของ งบฯ หลังโอน)  และมีการใช้จ่าย จำนวน **{total_spend:,.4f} ล้านบาท**  (คิดเป็น <span style="color:{color_spend}; font-weight:bold;">{percent_spend:.2f}%</span> ของ งบฯ หลังโอน) ทั้งนี้ สามารถจำแนกงบประมาณรายจ่ายออกเป็น 2 ประเภท ดังนี้""", unsafe_allow_html=True)
 
@@ -580,8 +579,8 @@ if "4️⃣ แผนบูรณาการ" in selected_menus:
         spend_r = df_plan_reg["ใช้จ่าย"].sum()
         per_disb_r = round((disb_r / after_r) * 100, 2) if after_r else 0
         per_spend_r = round((spend_r / after_r) * 100, 2) if after_r else 0
-        color_disb_r = "#00FF9F" if per_disb_r >= 57 else "#FF4B4B"
-        color_spend_r = "#00FF9F" if per_spend_r >= 58 else "#FF4B4B"
+        color_disb_r = "#00FF9F" if per_disb_r >= 80 else "#FF4B4B"
+        color_spend_r = "#00FF9F" if per_spend_r >= 81 else "#FF4B4B"
         st.markdown(f"""&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **1. รายจ่ายประจำ** ได้รับจัดสรรงบประมาณ **{prb_r:,.4f} ล้านบาท**  มีงบประมาณหลังโอนเปลี่ยนแปลง จำนวน **{after_r:,.4f} ล้านบาท**  เบิกจ่าย **{disb_r:,.4f} ล้านบาท**  (คิดเป็น <span style="color:{color_disb_r}; font-weight:bold;">{per_disb_r:.2f}%</span> ของ งบฯ หลังโอน)  ใช้จ่าย **{spend_r:,.4f} ล้านบาท**  (คิดเป็น <span style="color:{color_spend_r}; font-weight:bold;">{per_spend_r:.2f}%</span> ของ งบฯ หลังโอน)""", unsafe_allow_html=True)
 
     if not df_plan_inv.empty:
@@ -591,16 +590,16 @@ if "4️⃣ แผนบูรณาการ" in selected_menus:
         spend_i = df_plan_inv["ใช้จ่าย"].sum()
         per_disb_i = round((disb_i / after_i) * 100, 2) if after_i else 0
         per_spend_i = round((spend_i / after_i) * 100, 2) if after_i else 0
-        color_disb_i = "#00FF9F" if per_disb_i >= 35 else "#FF4B4B"
-        color_spend_i = "#00FF9F" if per_spend_i >= 66 else "#FF4B4B"
+        color_disb_i = "#00FF9F" if per_disb_i >= 54 else "#FF4B4B"
+        color_spend_i = "#00FF9F" if per_spend_i >= 77 else "#FF4B4B"
         st.markdown(f"""&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **2. รายจ่ายลงทุน** ได้รับจัดสรรงบประมาณ **{prb_i:,.4f} ล้านบาท**  มีงบประมาณหลังโอนเปลี่ยนแปลง จำนวน **{after_i:,.4f} ล้านบาท**  เบิกจ่าย **{disb_i:,.4f} ล้านบาท**  (คิดเป็น <span style="color:{color_disb_i}; font-weight:bold;">{per_disb_i:.2f}%</span> ของ งบฯ หลังโอน)  ใช้จ่าย **{spend_i:,.4f} ล้านบาท**  (คิดเป็น <span style="color:{color_spend_i}; font-weight:bold;">{per_spend_i:.2f}%</span> ของ งบฯ หลังโอน)""", unsafe_allow_html=True)
 
     # แสดงตาราง
-    show_plan_table(df_plan_selected, "ภาพรวม", disb_thres=53, spend_thres=61)
+    show_plan_table(df_plan_selected, "ภาพรวม", disb_thres=75, spend_thres=80)
     if not df_plan_reg.empty:
-        show_plan_table(df_plan_reg, "รายจ่ายประจำ", disb_thres=57, spend_thres=58)
+        show_plan_table(df_plan_reg, "รายจ่ายประจำ", disb_thres=80, spend_thres=81)
     if not df_plan_inv.empty:
-        show_plan_table(df_plan_inv, "รายจ่ายลงทุน", disb_thres=35, spend_thres=66)
+        show_plan_table(df_plan_inv, "รายจ่ายลงทุน", disb_thres=54, spend_thres=77)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
@@ -661,17 +660,17 @@ if "5️⃣ จังหวัดและกลุ่มจังหวัด" 
         st.dataframe(styled, use_container_width=True)
 
     # 🔸 แสดงตารางภาพรวม
-    show_local_table(df_selected, "ภาพรวม", disb_thres=53, spend_thres=61)
+    show_local_table(df_selected, "ภาพรวม", disb_thres=75, spend_thres=80)
 
     # 🔸 Filter และแสดง รายจ่ายประจำ
     df_reg = df_selected[df_selected["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายประจำ"]
     if not df_reg.empty:
-        show_local_table(df_reg, "รายจ่ายประจำ", disb_thres=57, spend_thres=58)
+        show_local_table(df_reg, "รายจ่ายประจำ", disb_thres=80, spend_thres=81)
 
     # 🔸 Filter และแสดง รายจ่ายลงทุน
     df_inv = df_selected[df_selected["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายลงทุน"]
     if not df_inv.empty:
-        show_local_table(df_inv, "รายจ่ายลงทุน", disb_thres=35, spend_thres=66)
+        show_local_table(df_inv, "รายจ่ายลงทุน", disb_thres=54, spend_thres=77)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
@@ -738,17 +737,17 @@ if "6️⃣ หน่วยงานของรัฐสภา" in selected_men
 """, unsafe_allow_html=True)
 
     # 🔸 ภาพรวม
-    show_parliament_table(df_selected, "ภาพรวม", disb_thres=53, spend_thres=61)
+    show_parliament_table(df_selected, "ภาพรวม", disb_thres=75, spend_thres=80)
 
     # 🔸 รายจ่ายประจำ
     df_par_reg = df_selected[df_selected["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายประจำ"]
     if not df_par_reg.empty:
-        show_parliament_table(df_par_reg, "รายจ่ายประจำ", disb_thres=57, spend_thres=58)
+        show_parliament_table(df_par_reg, "รายจ่ายประจำ", disb_thres=80, spend_thres=81)
 
     # 🔸 รายจ่ายลงทุน
     df_par_inv = df_selected[df_selected["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายลงทุน"]
     if not df_par_inv.empty:
-        show_parliament_table(df_par_inv, "รายจ่ายลงทุน", disb_thres=35, spend_thres=66)
+        show_parliament_table(df_par_inv, "รายจ่ายลงทุน", disb_thres=54, spend_thres=77)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
@@ -851,17 +850,17 @@ if "7️⃣ ผลผลิต/โครงการ (ค้นหาชื่�
         """, unsafe_allow_html=True)
 
     # ✅ ตาราง: ภาพรวม
-    show_project_table(df_project, "ภาพรวม", disb_thres=53, spend_thres=61)
+    show_project_table(df_project, "ภาพรวม", disb_thres=75, spend_thres=80)
 
     # ✅ ตาราง: รายจ่ายประจำ
     df_reg = df_project[df_project["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายประจำ"]
     if not df_reg.empty:
-        show_project_table(df_reg, "จ่ายรายจ่ายประจำ", disb_thres=57, spend_thres=58)
+        show_project_table(df_reg, "จ่ายรายจ่ายประจำ", disb_thres=80, spend_thres=81)
 
     # ✅ ตาราง: รายจ่ายลงทุน
     df_inv = df_project[df_project["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายลงทุน"]
     if not df_inv.empty:
-        show_project_table(df_inv, "จ่ายรายจ่ายลงทุน", disb_thres=35, spend_thres=66)
+        show_project_table(df_inv, "จ่ายรายจ่ายลงทุน", disb_thres=54, spend_thres=77)
 
     st.markdown("<br>", unsafe_allow_html=True)
 #--------------------------------------------------------------
@@ -926,12 +925,6 @@ if "8️⃣ ผลผลิต/โครงการ (ติดตามรา�
     st.markdown("<br>", unsafe_allow_html=True)
 
 
-
-
-
-
-
-
 #--------------------------------------------------------------
 # --- SECTION 9: ลักษณะงาน ---
 if "9️⃣ ลักษณะงาน" in selected_menus:
@@ -991,22 +984,17 @@ if "9️⃣ ลักษณะงาน" in selected_menus:
 """, unsafe_allow_html=True)
 
     # ✅ ตาราง: ภาพรวม
-    show_dimension_table(df_dim, "ภาพรวม", disb_thres=53, spend_thres=61)
+    show_dimension_table(df_dim, "ภาพรวม", disb_thres=75, spend_thres=80)
 
     # ✅ รายจ่ายประจำ
     df_dim_reg = df_dim[df_dim["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายประจำ"]
     if not df_dim_reg.empty:
-        show_dimension_table(df_dim_reg, "รายจ่ายประจำ", disb_thres=57, spend_thres=58)
+        show_dimension_table(df_dim_reg, "รายจ่ายประจำ", disb_thres=80, spend_thres=81)
 
     # ✅ รายจ่ายลงทุน
     df_dim_inv = df_dim[df_dim["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายลงทุน"]
     if not df_dim_inv.empty:
-        show_dimension_table(df_dim_inv, "รายจ่ายลงทุน", disb_thres=35, spend_thres=66)
-
-#--------------------------------------------------------------
-
-
-
+        show_dimension_table(df_dim_inv, "รายจ่ายลงทุน", disb_thres=54, spend_thres=77)
 
 #--------------------------------------------------------------
 
