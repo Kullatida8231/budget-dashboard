@@ -301,70 +301,62 @@ def show_metrics(data, title):
 
 #-----*********************************************************
 #-----*********************************************************
-# ✅ ส่วนแสดงผลตามเมนู
-# 🔧 ฟังก์ชันสรุปค่ารวมจาก DataFrame
-def compute_summary(df):
-    total_prb = df["พรบ."].sum()
-    total_after = df["งบฯ หลังโอน"].sum()
-    total_disb = df["เบิกจ่าย"].sum()
-    total_spend = df["ใช้จ่าย"].sum()
-    percent_disb = round((total_disb / total_after) * 100, 2) if total_after else 0
-    percent_spend = round((total_spend / total_after) * 100, 2) if total_after else 0
-    return total_prb, total_after, total_disb, percent_disb, total_spend, percent_spend
+# ✅ 1️⃣ ภาพรวมทั้งประเทศ
+if "1️⃣ ภาพรวมทั้งประเทศ" in selected_menus:
+
+    st.markdown("## 1️⃣ภาพรวมทั้งประเทศ")
+
+    # 👉 ฟังก์ชันย่อย
+    def show_metrics(summary_tuple, title):
+        prb, after, disb, disb_pct, spend, spend_pct = summary_tuple
+        col1, col2, col3, col4 = st.columns(4)
+        with col1:
+            st.metric(f"{title}\nพรบ.", f"{prb:,.2f}")
+        with col2:
+            st.metric(f"{title}\nงบฯ หลังโอน", f"{after:,.2f}")
+        with col3:
+            st.metric(f"{title}\nเบิกจ่าย", f"{disb:,.2f}", f"{disb_pct:.2f}%")
+        with col4:
+            st.metric(f"{title}\nใช้จ่าย", f"{spend:,.2f}", f"{spend_pct:.2f}%")
 
 
-# 🔧 ฟังก์ชันกำหนดสีตามประเภท
-def get_color(value, category, target_type):
-    thresholds = {
-        "ภาพรวม": {"เบิกจ่าย": 87.67, "ใช้จ่าย": 93.33},
-        "รายจ่ายประจำ": {"เบิกจ่าย": 92, "ใช้จ่าย": 93.67},
-        "รายจ่ายลงทุน": {"เบิกจ่าย": 71.33, "ใช้จ่าย": 92.33},
-    }
-    threshold = thresholds.get(category, {}).get(target_type, 0)
-    return "#00FF9F" if value >= threshold else "#FF4B4B"
+    def show_ministry_summary(df_ministry, title, disb_thres, spend_thres):
+        df_min = df_ministry.groupby("กระทรวง", as_index=False)[["พรบ.", "งบฯ หลังโอน", "เบิกจ่าย", "ใช้จ่าย"]].sum(numeric_only=True)
+        df_min["%เบิกจ่าย"] = round((df_min["เบิกจ่าย"] / df_min["งบฯ หลังโอน"]) * 100, 2)
+        df_min["%ใช้จ่าย"] = round((df_min["ใช้จ่าย"] / df_min["งบฯ หลังโอน"]) * 100, 2)
 
+        def highlight_ministry(row):
+            color_disb = "#00FF9F" if row["%เบิกจ่าย"] >= disb_thres else "#FF4B4B"
+            color_spend = "#00FF9F" if row["%ใช้จ่าย"] >= spend_thres else "#FF4B4B"
+            return ["", "", "", "", f"color: {color_disb}", "", f"color: {color_spend}"]
 
-# 🔧 ฟังก์ชันแสดง summary รายกระทรวง
-def show_ministry_summary(df_ministry, title, disb_thres, spend_thres):
-    df_min = df_ministry.groupby("กระทรวง", as_index=False)[["พรบ.", "งบฯ หลังโอน", "เบิกจ่าย", "ใช้จ่าย"]].sum(numeric_only=True)
-    df_min["%เบิกจ่าย"] = round((df_min["เบิกจ่าย"] / df_min["งบฯ หลังโอน"]) * 100, 2)
-    df_min["%ใช้จ่าย"] = round((df_min["ใช้จ่าย"] / df_min["งบฯ หลังโอน"]) * 100, 2)
+        styled = df_min[["กระทรวง", "พรบ.", "งบฯ หลังโอน", "เบิกจ่าย", "%เบิกจ่าย", "ใช้จ่าย", "%ใช้จ่าย"]].style.format({
+            "พรบ.": "{:,.4f}",
+            "งบฯ หลังโอน": "{:,.4f}",
+            "เบิกจ่าย": "{:,.4f}",
+            "ใช้จ่าย": "{:,.4f}",
+            "%เบิกจ่าย": "{:,.2f}%",
+            "%ใช้จ่าย": "{:,.2f}%"
+        }).apply(highlight_ministry, axis=1)
 
-    def highlight_ministry(row):
-        color_disb = "#00FF9F" if row["%เบิกจ่าย"] >= disb_thres else "#FF4B4B"
-        color_spend = "#00FF9F" if row["%ใช้จ่าย"] >= spend_thres else "#FF4B4B"
-        return ["", "", "", "", f"color: {color_disb}", "", f"color: {color_spend}"]
+        st.markdown(f"#### 📊 {title}")
+        st.dataframe(styled, use_container_width=True)
 
-    styled = df_min[["กระทรวง", "พรบ.", "งบฯ หลังโอน", "เบิกจ่าย", "%เบิกจ่าย", "ใช้จ่าย", "%ใช้จ่าย"]].style.format({
-        "พรบ.": "{:,.4f}",
-        "งบฯ หลังโอน": "{:,.4f}",
-        "เบิกจ่าย": "{:,.4f}",
-        "ใช้จ่าย": "{:,.4f}",
-        "%เบิกจ่าย": "{:,.2f}%",
-        "%ใช้จ่าย": "{:,.2f}%"
-    }).apply(highlight_ministry, axis=1)
+        total_prb = df_min["พรบ."].sum()
+        total_after = df_min["งบฯ หลังโอน"].sum()
+        total_disb = df_min["เบิกจ่าย"].sum()
+        total_spend = df_min["ใช้จ่าย"].sum()
+        percent_disb = round((total_disb / total_after) * 100, 2) if total_after else 0
+        percent_spend = round((total_spend / total_after) * 100, 2) if total_after else 0
 
-    st.markdown(f"#### 📊 {title}")
-    st.dataframe(styled, use_container_width=True)
+        disb_color = "#00FF9F" if percent_disb >= disb_thres else "#FF4B4B"
+        spend_color = "#00FF9F" if percent_spend >= spend_thres else "#FF4B4B"
 
-    # รวมยอด
-    total_prb = df_min["พรบ."].sum()
-    total_after = df_min["งบฯ หลังโอน"].sum()
-    total_disb = df_min["เบิกจ่าย"].sum()
-    total_spend = df_min["ใช้จ่าย"].sum()
-    percent_disb = round((total_disb / total_after) * 100, 2) if total_after else 0
-    percent_spend = round((total_spend / total_after) * 100, 2) if total_after else 0
-
-    disb_color = "#00FF9F" if percent_disb >= disb_thres else "#FF4B4B"
-    spend_color = "#00FF9F" if percent_spend >= spend_thres else "#FF4B4B"
-
-    st.markdown(f"""
+        st.markdown(f"""
 **รวมทั้งสิ้น** | พรบ.: **{total_prb:,.4f}** | หลังโอน: **{total_after:,.4f}** | 
 เบิกจ่าย: **{total_disb:,.4f}** | <span style='color:{disb_color}; font-weight:bold;'>%เบิกจ่าย: {percent_disb:.2f}%</span> | 
 ใช้จ่าย: **{total_spend:,.4f}** | <span style='color:{spend_color}; font-weight:bold;'>%ใช้จ่าย: {percent_spend:.2f}%</span>
 """, unsafe_allow_html=True)
-if "1️⃣ ภาพรวมทั้งประเทศ" in selected_menus:
-    st.markdown("## 1️⃣ภาพรวมทั้งประเทศ")
 
     # 👉 สรุปภาพรวมทุกประเภท
     total_all = compute_summary(df)
@@ -380,14 +372,10 @@ if "1️⃣ ภาพรวมทั้งประเทศ" in selected_menus:
     # 👉 ตารางตาม "กระทรวง"
     st.markdown("## 🏛️ สรุปตามกระทรวง")
 
-    # 🔹 กระทรวง - ภาพรวม
     show_ministry_summary(df, "ภาพรวม", disb_thres=87.67, spend_thres=93.33)
-
-    # 🔹 กระทรวง - รายจ่ายประจำ
     show_ministry_summary(df[df["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายประจำ"], "รายจ่ายประจำ", disb_thres=92, spend_thres=93.67)
-
-    # 🔹 กระทรวง - รายจ่ายลงทุน
     show_ministry_summary(df[df["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายลงทุน"], "รายจ่ายลงทุน", disb_thres=71.33, spend_thres=92.33)
+
 
 #-----*********************************************************
 #-----*********************************************************
@@ -1082,6 +1070,7 @@ if show_footer:
         🔹 ผู้รับผิดชอบ: **กุลธิดา สมศรี** และ **ศุภิกา ตรีรัตนไพบูลย์**  
         🔹 Code writer: **กุลธิดา สมศรี (70%)** และ **ChatGPT (30%)**
         """)
+
 
 
 
