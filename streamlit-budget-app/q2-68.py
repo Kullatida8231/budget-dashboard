@@ -825,7 +825,7 @@ if "6️⃣ หน่วยงานของรัฐสภา" in selected_men
         return ["", "", "", "", f"color: {color_disb}", "", f"color: {color_spend}"]
 
     # 🔹 ฟังก์ชันแสดงตารางและสรุปผล
-    def show_parliament_table(df_subset, title, disb_thres, spend_thres):
+    def show_parliament_table(df_subset, disb_thres, spend_thres):
         df_grouped = df_subset.groupby("ผลผลิต/โครงการ", as_index=False)[
             ["พรบ.", "งบฯ หลังโอน", "เบิกจ่าย", "ใช้จ่าย"]
         ].sum(numeric_only=True)
@@ -844,7 +844,6 @@ if "6️⃣ หน่วยงานของรัฐสภา" in selected_men
             "%ใช้จ่าย": "{:,.2f}%"
         }).apply(lambda row: highlight_parliament(row, disb_thres, spend_thres), axis=1)
 
-        st.markdown(f"### {title}")
         st.dataframe(styled, use_container_width=True)
 
         # 🔸 รวมยอด
@@ -864,18 +863,28 @@ if "6️⃣ หน่วยงานของรัฐสภา" in selected_men
 ใช้จ่าย: **{total_spend:,.4f}** | <span style='color:{color_spend_text}; font-weight:bold;'>%ใช้จ่าย: {percent_spend:.2f}%</span>
 """, unsafe_allow_html=True)
 
-    # 🔸 ภาพรวม
-    show_parliament_table(df_selected, "ภาพรวม", disb_thres=87.67, spend_thres=93.33)
+    # ✅ Tabs สำหรับตาราง
+    tab1, tab2, tab3 = st.tabs(["📊 ภาพรวม", "🏢 รายจ่ายประจำ", "🏗️ รายจ่ายลงทุน"])
 
-    # 🔸 รายจ่ายประจำ
-    df_par_reg = df_selected[df_selected["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายประจำ"]
-    if not df_par_reg.empty:
-        show_parliament_table(df_par_reg, "รายจ่ายประจำ", disb_thres=92, spend_thres=93.67)
+    # 📊 Tab 1: ภาพรวม
+    with tab1:
+        show_parliament_table(df_selected, disb_thres=87.67, spend_thres=93.33)
 
-    # 🔸 รายจ่ายลงทุน
-    df_par_inv = df_selected[df_selected["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายลงทุน"]
-    if not df_par_inv.empty:
-        show_parliament_table(df_par_inv, "รายจ่ายลงทุน", disb_thres=71.33, spend_thres=92.33)
+    # 🏢 Tab 2: รายจ่ายประจำ
+    with tab2:
+        df_par_reg = df_selected[df_selected["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายประจำ"]
+        if not df_par_reg.empty:
+            show_parliament_table(df_par_reg, disb_thres=92, spend_thres=93.67)
+        else:
+            st.info("ไม่มีข้อมูลรายจ่ายประจำ")
+
+    # 🏗️ Tab 3: รายจ่ายลงทุน
+    with tab3:
+        df_par_inv = df_selected[df_selected["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายลงทุน"]
+        if not df_par_inv.empty:
+            show_parliament_table(df_par_inv, disb_thres=71.33, spend_thres=92.33)
+        else:
+            st.info("ไม่มีข้อมูลรายจ่ายลงทุน")
 
     st.markdown("<br>", unsafe_allow_html=True)
 
@@ -1161,6 +1170,7 @@ if show_footer:
         🔹 ผู้รับผิดชอบ: **กุลธิดา สมศรี** และ **ศุภิกา ตรีรัตนไพบูลย์**  
         🔹 Code writer: **กุลธิดา สมศรี (70%)** และ **ChatGPT (30%)**
         """)
+
 
 
 
