@@ -498,7 +498,7 @@ if "3️⃣ งบกลาง" in selected_menus:
         return ["", "", "", "", f"color: {color_disb}", "", f"color: {color_spend}"]
 
     # 🔹 ฟังก์ชันแสดงตารางและสรุปผล
-    def show_central_table(df_subset, title, disb_thres, spend_thres):
+    def show_central_table(df_subset, disb_thres, spend_thres):
         df_grouped = df_subset.groupby("ผลผลิต/โครงการ", as_index=False)[
             ["พรบ.", "งบฯ หลังโอน", "เบิกจ่าย", "ใช้จ่าย"]
         ].sum(numeric_only=True)
@@ -517,7 +517,6 @@ if "3️⃣ งบกลาง" in selected_menus:
             "%ใช้จ่าย": "{:,.2f}%"
         }).apply(lambda row: highlight_central(row, disb_thres, spend_thres), axis=1)
 
-        st.markdown(f"### {title}")
         st.dataframe(styled, use_container_width=True)
 
         # 🔸 รวมยอด
@@ -532,23 +531,30 @@ if "3️⃣ งบกลาง" in selected_menus:
         color_spend_text = "#00FF9F" if percent_spend >= spend_thres else "#FF4B4B"
 
         st.markdown(f"""
-รวมทั้งสิ้น | พรบ.: {total_prb:,.4f} | หลังโอน: {total_after:,.4f} | 
-เบิกจ่าย: {total_disb:,.4f} | <span style='color:{color_disb_text}; font-weight:bold;'>%เบิกจ่าย: {percent_disb:.2f}%</span> | 
-ใช้จ่าย: {total_spend:,.4f} | <span style='color:{color_spend_text}; font-weight:bold;'>%ใช้จ่าย: {percent_spend:.2f}%</span>
+**รวมทั้งสิ้น** | พรบ.: **{total_prb:,.4f}** | หลังโอน: **{total_after:,.4f}** | 
+เบิกจ่าย: **{total_disb:,.4f}** | <span style='color:{color_disb_text}; font-weight:bold;'>%เบิกจ่าย: {percent_disb:.2f}%</span> | 
+ใช้จ่าย: **{total_spend:,.4f}** | <span style='color:{color_spend_text}; font-weight:bold;'>%ใช้จ่าย: {percent_spend:.2f}%</span>
 """, unsafe_allow_html=True)
 
-    # 🔸 ภาพรวม
-    show_central_table(df_central, "ภาพรวม", disb_thres=87.67, spend_thres=93.33)
+    # 🔹 Tabs สำหรับตาราง
+    tab1, tab2, tab3 = st.tabs(["📊 ภาพรวม", "🏢 รายจ่ายประจำ", "🏗️ รายจ่ายลงทุน"])
 
-    # 🔸 รายจ่ายประจำ
-    df_central_reg = df_central[df_central["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายประจำ"]
-    if not df_central_reg.empty:
-        show_central_table(df_central_reg, "รายจ่ายประจำ", disb_thres=92, spend_thres=93.67)
+    with tab1:
+        show_central_table(df_central, disb_thres=87.67, spend_thres=93.33)
 
-    # 🔸 รายจ่ายลงทุน
-    df_central_inv = df_central[df_central["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายลงทุน"]
-    if not df_central_inv.empty:
-        show_central_table(df_central_inv, "รายจ่ายลงทุน", disb_thres=71.33, spend_thres=92.33)
+    with tab2:
+        df_central_reg = df_central[df_central["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายประจำ"]
+        if not df_central_reg.empty:
+            show_central_table(df_central_reg, disb_thres=92, spend_thres=93.67)
+        else:
+            st.info("ไม่มีข้อมูลสำหรับรายจ่ายประจำ")
+
+    with tab3:
+        df_central_inv = df_central[df_central["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายลงทุน"]
+        if not df_central_inv.empty:
+            show_central_table(df_central_inv, disb_thres=71.33, spend_thres=92.33)
+        else:
+            st.info("ไม่มีข้อมูลสำหรับรายจ่ายลงทุน")
 
     st.markdown("<br>", unsafe_allow_html=True)
 
@@ -1112,6 +1118,7 @@ if show_footer:
         🔹 ผู้รับผิดชอบ: **กุลธิดา สมศรี** และ **ศุภิกา ตรีรัตนไพบูลย์**  
         🔹 Code writer: **กุลธิดา สมศรี (70%)** และ **ChatGPT (30%)**
         """)
+
 
 
 
