@@ -1096,7 +1096,11 @@ if "9️⃣ ลักษณะงาน" in selected_menus:
         color_spend = "#00FF9F" if row["%ใช้จ่าย"] >= spend_thres else "#FF4B4B"
         return ["", "", "", "", f"color: {color_disb}", "", f"color: {color_spend}"]
 
-    def show_dimension_table(df_sub, title, disb_thres, spend_thres):
+    def show_dimension_table(df_sub, disb_thres, spend_thres, category):
+        if df_sub.empty:
+            st.info("ไม่มีข้อมูล")
+            return
+
         group_cols = ["หน่วยงาน"]
         sum_cols = ["พรบ.", "งบฯ หลังโอน", "เบิกจ่าย", "ใช้จ่าย"]
         df_grouped = df_sub.groupby(group_cols, as_index=False)[sum_cols].sum(numeric_only=True)
@@ -1114,7 +1118,6 @@ if "9️⃣ ลักษณะงาน" in selected_menus:
             "%ใช้จ่าย": "{:,.2f}%"
         }).apply(lambda row: highlight_table(row, disb_thres, spend_thres), axis=1)
 
-        st.markdown(f"### {title}")
         st.dataframe(styled, use_container_width=True)
 
         # 🔸 รวมยอด
@@ -1134,18 +1137,22 @@ if "9️⃣ ลักษณะงาน" in selected_menus:
 ใช้จ่าย: **{total_spend:,.4f}** | <span style='color:{color_spend_text}; font-weight:bold;'>%ใช้จ่าย: {percent_spend:.2f}%</span>
 """, unsafe_allow_html=True)
 
-    # ✅ ตาราง: ภาพรวม
-    show_dimension_table(df_dim, "ภาพรวม", disb_thres=87.67, spend_thres=93.33)
-
-    # ✅ รายจ่ายประจำ
+    # 🔹 แยกข้อมูล
     df_dim_reg = df_dim[df_dim["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายประจำ"]
-    if not df_dim_reg.empty:
-        show_dimension_table(df_dim_reg, "รายจ่ายประจำ", disb_thres=92, spend_thres=93.67)
-
-    # ✅ รายจ่ายลงทุน
     df_dim_inv = df_dim[df_dim["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายลงทุน"]
-    if not df_dim_inv.empty:
-        show_dimension_table(df_dim_inv, "รายจ่ายลงทุน", disb_thres=71.33, spend_thres=92.33)
+
+    # ✅ Tabs สำหรับตาราง
+    tab1, tab2, tab3 = st.tabs(["📊 ภาพรวม", "🏢 รายจ่ายประจำ", "🏗️ รายจ่ายลงทุน"])
+
+    with tab1:
+        show_dimension_table(df_dim, disb_thres=87.67, spend_thres=93.33, category="ภาพรวม")
+
+    with tab2:
+        show_dimension_table(df_dim_reg, disb_thres=92, spend_thres=93.67, category="รายจ่ายประจำ")
+
+    with tab3:
+        show_dimension_table(df_dim_inv, disb_thres=71.33, spend_thres=92.33, category="รายจ่ายลงทุน")
+
 
 #--------------------------------------------------------------
 
@@ -1182,6 +1189,7 @@ if show_footer:
         🔹 ผู้รับผิดชอบ: **กุลธิดา สมศรี** และ **ศุภิกา ตรีรัตนไพบูลย์**  
         🔹 Code writer: **กุลธิดา สมศรี (70%)** และ **ChatGPT (30%)**
         """)
+
 
 
 
