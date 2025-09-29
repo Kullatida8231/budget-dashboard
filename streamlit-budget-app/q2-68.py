@@ -470,29 +470,30 @@ if "1️⃣ ภาพรวมทั้งประเทศ/กระทรว�
     # ใช้ st.table เพื่อการนำเสนอแบบคงที่ (ไม่เลื่อน/ไม่แก้ไข)
     #st.table(display_df)
     
-    # ======================== 🍩 DONUT CHARTS (Plotly) ======================== #
-    import plotly.express as px
-    import pandas as pd
+       # ======================== 📊 BAR CHART (ค่า + สัดส่วน) ======================== #
+    import plotly.graph_objects as go
 
-    # Donut: เบิกจ่าย ต่อ พ.ร.บ.
-    df_donut1 = pd.DataFrame({
-        "หมวด": ["เบิกจ่าย (ลงทุน)", "ส่วนที่เหลือ (เทียบ พ.ร.บ.)"],
-        "ค่า": [total_invest_disb, max(total_prb - total_invest_disb, 0)]
-    })
-    fig1 = px.pie(df_donut1, values="ค่า", names="หมวด", hole=0.6, title="เบิกจ่ายลงทุน เทียบ พ.ร.บ.")
-    fig1.update_layout(showlegend=True, height=320)
+    fig = go.Figure()
+    fig.add_bar(name="เบิกจ่าย (ลบ.)", x=["งบลงทุน"], y=[total_invest_disb])
+    fig.add_bar(name="ใช้จ่าย (ลบ.)", x=["งบลงทุน"], y=[total_invest_spend])
 
-    # Donut: ใช้จ่าย ต่อ หลังโอน
-    df_donut2 = pd.DataFrame({
-        "หมวด": ["ใช้จ่าย (ลงทุน)", "ส่วนที่เหลือ (เทียบ หลังโอน)"],
-        "ค่า": [total_invest_spend, max(total_trans - total_invest_spend, 0)]
-    })
-    fig2 = px.pie(df_donut2, values="ค่า", names="หมวด", hole=0.6, title="ใช้จ่ายลงทุน เทียบ งบฯ หลังโอน")
-    fig2.update_layout(showlegend=True, height=320)
+    # แกนรองสำหรับ % ต่อ พ.ร.บ.
+    fig.add_trace(go.Scatter(
+        name="% เบิกจ่ายต่อ พ.ร.บ.", x=["งบลงทุน"], y=[ratio_invest_disb_prb],
+        mode="lines+markers", yaxis="y2"
+    ))
+    fig.add_trace(go.Scatter(
+        name="% ใช้จ่ายต่อ พ.ร.บ.", x=["งบลงทุน"], y=[ratio_invest_spend_prb],
+        mode="lines+markers", yaxis="y2"
+    ))
 
-    c1, c2 = st.columns(2)
-    c1.plotly_chart(fig1, use_container_width=True)
-    c2.plotly_chart(fig2, use_container_width=True)
+    fig.update_layout(
+        barmode="group",
+        yaxis=dict(title="ล้านบาท"),
+        yaxis2=dict(title="เปอร์เซ็นต์", overlaying="y", side="right"),
+        height=360
+    )
+    st.plotly_chart(fig, use_container_width=True)
 
 
 
@@ -1411,6 +1412,7 @@ if show_footer:
         🔹 ผู้รับผิดชอบ: **กุลธิดา สมศรี** และ **ศุภิกา ตรีรัตนไพบูลย์**  
         🔹 Code writer: **กุลธิดา สมศรี (70%)** และ **ChatGPT (30%)**
         """)
+
 
 
 
