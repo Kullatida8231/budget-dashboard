@@ -470,30 +470,42 @@ if "1️⃣ ภาพรวมทั้งประเทศ/กระทรว�
     # ใช้ st.table เพื่อการนำเสนอแบบคงที่ (ไม่เลื่อน/ไม่แก้ไข)
     #st.table(display_df)
     
-       # ======================== 📊 BAR CHART (ค่า + สัดส่วน) ======================== #
-    import plotly.graph_objects as go
+    # ======================== ⭐ KPI CARDS + PROGRESS ======================== #
+    # รองรับ Light/Dark
+    st.markdown("""
+    <style>
+      @media (prefers-color-scheme: light) {
+        .kpi-card { background:#f8f8f8; color:#000; }
+      }
+      @media (prefers-color-scheme: dark) {
+        .kpi-card { background:#1f1f1f; color:#fff; }
+      }
+      .kpi-card { padding:16px; border-radius:12px; border:1px solid rgba(128,128,128,.2); }
+      .kpi-label { font-size:13px; opacity:.75; margin-bottom:6px; }
+      .kpi-value { font-size:20px; font-weight:700; margin-bottom:8px; }
+      .kpi-sub { font-size:12px; opacity:.75; }
+    </style>
+    """, unsafe_allow_html=True)
 
-    fig = go.Figure()
-    fig.add_bar(name="เบิกจ่าย (ลบ.)", x=["งบลงทุน"], y=[total_invest_disb])
-    fig.add_bar(name="ใช้จ่าย (ลบ.)", x=["งบลงทุน"], y=[total_invest_spend])
+    c1, c2 = st.columns(2)
+    with c1:
+        st.markdown("<div class='kpi-card'>"
+                    "<div class='kpi-label'>เบิกจ่าย (งบลงทุน)</div>"
+                    f"<div class='kpi-value'>{total_invest_disb_disp:,.4f} ลบ.</div>"
+                    f"<div class='kpi-sub'>% ต่อ พ.ร.บ.: <b>{ratio_invest_disb_prb:.2f}%</b> • "
+                    f"% ต่อ งบฯ หลังโอน: <b>{ratio_invest_disb_trans:.2f}%</b></div>"
+                    "</div>", unsafe_allow_html=True)
+        st.progress(min(int(ratio_invest_disb_prb), 100))
 
-    # แกนรองสำหรับ % ต่อ พ.ร.บ.
-    fig.add_trace(go.Scatter(
-        name="% เบิกจ่ายต่อ พ.ร.บ.", x=["งบลงทุน"], y=[ratio_invest_disb_prb],
-        mode="lines+markers", yaxis="y2"
-    ))
-    fig.add_trace(go.Scatter(
-        name="% ใช้จ่ายต่อ พ.ร.บ.", x=["งบลงทุน"], y=[ratio_invest_spend_prb],
-        mode="lines+markers", yaxis="y2"
-    ))
+    with c2:
+        st.markdown("<div class='kpi-card'>"
+                    "<div class='kpi-label'>ใช้จ่าย (งบลงทุน)</div>"
+                    f"<div class='kpi-value'>{total_invest_spend_disp:,.4f} ลบ.</div>"
+                    f"<div class='kpi-sub'>% ต่อ พ.ร.บ.: <b>{ratio_invest_spend_prb:.2f}%</b> • "
+                    f"% ต่อ งบฯ หลังโอน: <b>{ratio_invest_spend_trans:.2f}%</b></div>"
+                    "</div>", unsafe_allow_html=True)
+        st.progress(min(int(ratio_invest_spend_prb), 100))
 
-    fig.update_layout(
-        barmode="group",
-        yaxis=dict(title="ล้านบาท"),
-        yaxis2=dict(title="เปอร์เซ็นต์", overlaying="y", side="right"),
-        height=360
-    )
-    st.plotly_chart(fig, use_container_width=True)
 
 
 
@@ -1412,6 +1424,7 @@ if show_footer:
         🔹 ผู้รับผิดชอบ: **กุลธิดา สมศรี** และ **ศุภิกา ตรีรัตนไพบูลย์**  
         🔹 Code writer: **กุลธิดา สมศรี (70%)** และ **ChatGPT (30%)**
         """)
+
 
 
 
