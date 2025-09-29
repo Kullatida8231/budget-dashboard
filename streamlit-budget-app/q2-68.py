@@ -466,41 +466,64 @@ if "1️⃣ ภาพรวมทั้งประเทศ/กระทรว�
     # ใช้ st.table เพื่อการนำเสนอแบบคงที่ (ไม่เลื่อน/ไม่แก้ไข)
     #st.table(display_df)
     
-    # ======================== ⭐ KPI CARDS + PROGRESS ======================== #
-    # รองรับ Light/Dark
+    # ======================== 🌟 KPI CARDS (Large & Stylish) ======================== #
+    # วาง CSS แค่ครั้งเดียวพอ (รองรับ Light/Dark)
     st.markdown("""
     <style>
       @media (prefers-color-scheme: light) {
-        .kpi-card { background:#f8f8f8; color:#000; }
+        .kpi-card { background:#ffffff; color:#000; box-shadow:0 2px 6px rgba(0,0,0,0.08); }
       }
       @media (prefers-color-scheme: dark) {
-        .kpi-card { background:#1f1f1f; color:#fff; }
+        .kpi-card { background:#2b2b2b; color:#fff; box-shadow:0 2px 6px rgba(255,255,255,0.05); }
       }
-      .kpi-card { padding:16px; border-radius:12px; border:1px solid rgba(128,128,128,.2); }
-      .kpi-label { font-size:13px; opacity:.75; margin-bottom:6px; }
-      .kpi-value { font-size:20px; font-weight:700; margin-bottom:8px; }
-      .kpi-sub { font-size:12px; opacity:.75; }
+      .kpi-card{
+        padding:22px; border-radius:14px; border:1px solid rgba(128,128,128,.18);
+        margin-bottom:16px; text-align:center;
+      }
+      .kpi-label{
+        font-size:16px; font-weight:700; margin-bottom:8px; color:#8a8a8a;
+        text-transform:uppercase; letter-spacing:.4px;
+      }
+      .kpi-value{ font-size:30px; font-weight:800; margin-bottom:10px; color:#00b4d8; }
+      .kpi-sub{ font-size:15px; opacity:.95; }
     </style>
     """, unsafe_allow_html=True)
 
+    # === การ์ด KPI: เบิกจ่าย / ใช้จ่าย (ลงทุน) ===
     c1, c2 = st.columns(2)
+
     with c1:
-        st.markdown("<div class='kpi-card'>"
-                    "<div class='kpi-label'>เบิกจ่ายงบประมาณรายจ่ายลงทุน</div>"
-                    f"<div class='kpi-value'>{total_invest_disb_disp:,.4f} ล้านบาท</div>"
-                    f"<div class='kpi-sub'>% ต่อ พ.ร.บ.: <b>{ratio_invest_disb_prb:.2f}%</b> • "
-                    f"% ต่อ งบฯ หลังโอน: <b>{ratio_invest_disb_trans:.2f}%</b></div>"
-                    "</div>", unsafe_allow_html=True)
+        st.markdown(
+            f"""
+            <div class='kpi-card'>
+              <div class='kpi-label'>เบิกจ่ายงบลงทุน</div>
+              <div class='kpi-value'>{total_invest_disb_disp:,.2f} ล้านบาท</div>
+              <div class='kpi-sub'>
+                % ต่อ พ.ร.บ.: <b>{ratio_invest_disb_prb:.2f}%</b> •
+                % ต่อ งบฯ หลังโอน: <b>{ratio_invest_disb_trans:.2f}%</b>
+              </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
         st.progress(min(int(ratio_invest_disb_prb), 100))
 
     with c2:
-        st.markdown("<div class='kpi-card'>"
-                    "<div class='kpi-label'>ใช้จ่ายงบประมาณรายจ่ายลงทุน</div>"
-                    f"<div class='kpi-value'>{total_invest_spend_disp:,.4f} ล้านบาท</div>"
-                    f"<div class='kpi-sub'>% ต่อ พ.ร.บ.: <b>{ratio_invest_spend_prb:.2f}%</b> • "
-                    f"% ต่อ งบฯ หลังโอน: <b>{ratio_invest_spend_trans:.2f}%</b></div>"
-                    "</div>", unsafe_allow_html=True)
+        st.markdown(
+            f"""
+            <div class='kpi-card'>
+              <div class='kpi-label'>ใช้จ่ายงบลงทุน</div>
+              <div class='kpi-value'>{total_invest_spend_disp:,.2f} ล้านบาท</div>
+              <div class='kpi-sub'>
+                % ต่อ พ.ร.บ.: <b>{ratio_invest_spend_prb:.2f}%</b> •
+                % ต่อ งบฯ หลังโอน: <b>{ratio_invest_spend_trans:.2f}%</b>
+              </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
         st.progress(min(int(ratio_invest_spend_prb), 100))
+
 
 
 
@@ -1420,6 +1443,7 @@ if show_footer:
         🔹 ผู้รับผิดชอบ: **กุลธิดา สมศรี** และ **ศุภิกา ตรีรัตนไพบูลย์**  
         🔹 Code writer: **กุลธิดา สมศรี (70%)** และ **ChatGPT (30%)**
         """)
+
 
 
 
