@@ -486,8 +486,8 @@ if "1️⃣ ภาพรวมทั้งประเทศ/กระทรว�
     c1, c2 = st.columns(2)
     with c1:
         st.markdown("<div class='kpi-card'>"
-                    "<div class='kpi-label'>เบิกจ่าย (งบลงทุน)</div>"
-                    f"<div class='kpi-value'>{total_invest_disb_disp:,.4f} ลบ.</div>"
+                    "<div class='kpi-label'>เบิกจ่าย (งบประมาณรายจ่ายลงทุน)</div>"
+                    f"<div class='kpi-value'>{total_invest_disb_disp:,.4f} ล้านบาท.</div>"
                     f"<div class='kpi-sub'>% ต่อ พ.ร.บ.: <b>{ratio_invest_disb_prb:.2f}%</b> • "
                     f"% ต่อ งบฯ หลังโอน: <b>{ratio_invest_disb_trans:.2f}%</b></div>"
                     "</div>", unsafe_allow_html=True)
@@ -495,8 +495,8 @@ if "1️⃣ ภาพรวมทั้งประเทศ/กระทรว�
 
     with c2:
         st.markdown("<div class='kpi-card'>"
-                    "<div class='kpi-label'>ใช้จ่าย (งบลงทุน)</div>"
-                    f"<div class='kpi-value'>{total_invest_spend_disp:,.4f} ลบ.</div>"
+                    "<div class='kpi-label'>ใช้จ่าย (งบประมาณรายจ่ายลงทุน)</div>"
+                    f"<div class='kpi-value'>{total_invest_spend_disp:,.4f} ล้านบาท.</div>"
                     f"<div class='kpi-sub'>% ต่อ พ.ร.บ.: <b>{ratio_invest_spend_prb:.2f}%</b> • "
                     f"% ต่อ งบฯ หลังโอน: <b>{ratio_invest_spend_trans:.2f}%</b></div>"
                     "</div>", unsafe_allow_html=True)
@@ -1420,6 +1420,7 @@ if show_footer:
         🔹 ผู้รับผิดชอบ: **กุลธิดา สมศรี** และ **ศุภิกา ตรีรัตนไพบูลย์**  
         🔹 Code writer: **กุลธิดา สมศรี (70%)** และ **ChatGPT (30%)**
         """)
+
 
 
 
