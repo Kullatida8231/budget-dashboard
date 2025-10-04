@@ -98,6 +98,17 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# ===== ปุ่มดาวน์โหลดไฟล์ Excel =====
+with open("q4-68 Sep.xlsx", "rb") as file:
+    btn = st.download_button(
+        label="📥 ดาวน์โหลดไฟล์ Excel (q4-68 Sep.xlsx)",
+        data=file,
+        file_name="q4-68 Sep.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        use_container_width=True
+    )
+
+
 st.markdown("<br>", unsafe_allow_html=True)
 st.markdown("""
 <div style='text-align: left; font-size: 18px; font-weight: bold; margin-bottom: 10px;'>
@@ -1481,6 +1492,7 @@ if show_footer:
         🔹 Code writer: **กุลธิดา สมศรี (70%)** และ **ChatGPT (30%)**  
         🔹 ค่าใช้จ่าย: ระบบไม่ได้ใช้งบประมาณแผ่นดิน ค่า chatGPT ผู้เขียนโค้ดออกค่าใช้จ่ายเอง
         """)
+
 
 
 
