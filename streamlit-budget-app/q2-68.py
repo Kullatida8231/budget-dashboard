@@ -98,26 +98,27 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# ===== ปุ่มดาวน์โหลดไฟล์ Excel (ชิดขวา, คนละบรรทัด) =====
+# ===== ปุ่มดาวน์โหลดไฟล์ Excel (จัดชิดขวา) =====
 from io import BytesIO
 
+# ถ้าต้องการให้ดาวน์โหลดไฟล์ที่ประมวลผลแล้ว
 buffer = BytesIO()
 df.to_excel(buffer, index=False, engine='openpyxl')
 buffer.seek(0)
 
-# ช่องว่างด้านบนเล็กน้อย (ถ้าอยากให้ห่างจากปุ่มก่อนหน้า)
-st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
+st.markdown("""
+<div style='display: flex; justify-content: flex-end;'>
+    <div>
+""", unsafe_allow_html=True)
 
-# ใช้คอลัมน์ดันปุ่มไปขวาสุด
-_, right = st.columns([0.7, 0.3])   # ปรับสัดส่วนได้ตามต้องการ
-with right:
-    st.download_button(
-        label="📥 ดาวน์โหลดไฟล์ Excel (q4-68 Sep.xlsx)",
-        data=buffer,
-        file_name="q4-68 Sep.xlsx",
-        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        use_container_width=True
-    )
+st.download_button(
+    label="📥 ดาวน์โหลดไฟล์ Excel (q4-68 Sep.xlsx)",
+    data=buffer,
+    file_name="q4-68 Sep.xlsx",
+    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+)
+
+st.markdown("</div></div>", unsafe_allow_html=True)
 
 
 
@@ -1505,6 +1506,7 @@ if show_footer:
         🔹 Code writer: **กุลธิดา สมศรี (70%)** และ **ChatGPT (30%)**  
         🔹 ค่าใช้จ่าย: ระบบไม่ได้ใช้งบประมาณแผ่นดิน ค่า chatGPT ผู้เขียนโค้ดออกค่าใช้จ่ายเอง
         """)
+
 
 
 
