@@ -99,29 +99,32 @@ st.markdown(
 )
 
 from io import BytesIO
+import base64
 
 # ----- เตรียมไฟล์ Excel สำหรับดาวน์โหลด -----
 buffer = BytesIO()
 df.to_excel(buffer, index=False, engine='openpyxl')
 buffer.seek(0)
+b64 = base64.b64encode(buffer.read()).decode()
 
-# ----- ปุ่มดาวน์โหลดไฟล์ Excel -----
-st.markdown("""
-<div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
-    <div style="display: flex; gap: 10px;">
-""", unsafe_allow_html=True)
-
-# ปุ่มดาวน์โหลด Excel
-st.download_button(
-    label="📥 ดาวน์โหลดไฟล์ Excel (q4-68 September.xlsx)",
-    data=buffer,
-    file_name="q4-68 September.xlsx",
-    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-)
-
-st.markdown("""
+# ----- ปุ่มดาวน์โหลด Excel ชิดขวา -----
+st.markdown(f"""
+    <div style="display: flex; justify-content: flex-end; margin-top: 0.5rem;">
+        <a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" 
+           download="q4-68 September.xlsx"
+           style="
+               background-color: #f63366;
+               color: white;
+               padding: 0.5em 1em;
+               border-radius: 8px;
+               text-decoration: none;
+               font-weight: 500;
+               font-size: 16px;
+               display: inline-block;
+           ">
+           📥 ดาวน์โหลดไฟล์ Excel (q4-68 September.xlsx)
+        </a>
     </div>
-</div>
 """, unsafe_allow_html=True)
 
 
@@ -1512,6 +1515,7 @@ if show_footer:
         🔹 Code writer: **กุลธิดา สมศรี (70%)** และ **ChatGPT (30%)**  
         🔹 ค่าใช้จ่าย: ระบบไม่ได้ใช้งบประมาณแผ่นดิน ค่า chatGPT ผู้เขียนโค้ดออกค่าใช้จ่ายเอง
         """)
+
 
 
 
