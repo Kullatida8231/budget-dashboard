@@ -98,6 +98,32 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+from io import BytesIO
+
+# ----- เตรียมไฟล์ Excel สำหรับดาวน์โหลด -----
+buffer = BytesIO()
+df.to_excel(buffer, index=False, engine='openpyxl')
+buffer.seek(0)
+
+# ----- ปุ่มดาวน์โหลดไฟล์ Excel -----
+st.markdown("""
+<div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+    <div style="display: flex; gap: 10px;">
+""", unsafe_allow_html=True)
+
+# ปุ่มดาวน์โหลด Excel
+st.download_button(
+    label="📥 ดาวน์โหลดไฟล์ Excel (q4-68 September.xlsx)",
+    data=buffer,
+    file_name="q4-68 September.xlsx",
+    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+)
+
+st.markdown("""
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
 
 
 
@@ -1486,6 +1512,7 @@ if show_footer:
         🔹 Code writer: **กุลธิดา สมศรี (70%)** และ **ChatGPT (30%)**  
         🔹 ค่าใช้จ่าย: ระบบไม่ได้ใช้งบประมาณแผ่นดิน ค่า chatGPT ผู้เขียนโค้ดออกค่าใช้จ่ายเอง
         """)
+
 
 
 
