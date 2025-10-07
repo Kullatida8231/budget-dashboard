@@ -113,7 +113,7 @@ st.markdown(f"""
         <a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" 
            download="q4-68 September.xlsx"
            style="
-               background-color: #f63366;
+               background-color: #F5F5F5;
                color: white;
                padding: 0.5em 1em;
                border-radius: 8px;
@@ -1517,6 +1517,7 @@ if show_footer:
         🔹 Code writer: **กุลธิดา สมศรี (70%)** และ **ChatGPT (30%)**  
         🔹 ค่าใช้จ่าย: ระบบไม่ได้ใช้งบประมาณแผ่นดิน ค่า chatGPT ผู้เขียนโค้ดออกค่าใช้จ่ายเอง
         """)
+
 
 
 
