@@ -868,8 +868,8 @@ if "4️⃣ แผนบูรณาการ" in selected_menus:
     total_spend = df_plan["ใช้จ่าย"].sum()
     percent_disb = round((total_disb / total_after) * 100, 2) if total_after else 0
     percent_spend = round((total_spend / total_after) * 100, 2) if total_after else 0
-    color_disb = "#00FF9F" if percent_disb >= 87.67 else "#FF4B4B"
-    color_spend = "#00FF9F" if percent_spend >= 93.33 else "#FF4B4B"
+    color_disb = "#00FF9F" if percent_disb >= 94 else "#FF4B4B"
+    color_spend = "#00FF9F" if percent_spend >= 100 else "#FF4B4B"
 
     # 🔹 ประจำ
     prb_r = df_reg["พรบ."].sum()
@@ -878,8 +878,8 @@ if "4️⃣ แผนบูรณาการ" in selected_menus:
     spend_r = df_reg["ใช้จ่าย"].sum()
     per_disb_r = round((disb_r / after_r) * 100, 2) if after_r else 0
     per_spend_r = round((spend_r / after_r) * 100, 2) if after_r else 0
-    color_disb_r = "#00FF9F" if per_disb_r >= 92 else "#FF4B4B"
-    color_spend_r = "#00FF9F" if per_spend_r >= 93.67 else "#FF4B4B"
+    color_disb_r = "#00FF9F" if per_disb_r >= 98 else "#FF4B4B"
+    color_spend_r = "#00FF9F" if per_spend_r >= 100 else "#FF4B4B"
 
     # 🔹 ลงทุน
     prb_i = df_inv["พรบ."].sum()
@@ -888,8 +888,8 @@ if "4️⃣ แผนบูรณาการ" in selected_menus:
     spend_i = df_inv["ใช้จ่าย"].sum()
     per_disb_i = round((disb_i / after_i) * 100, 2) if after_i else 0
     per_spend_i = round((spend_i / after_i) * 100, 2) if after_i else 0
-    color_disb_i = "#00FF9F" if per_disb_i >= 71.33 else "#FF4B4B"
-    color_spend_i = "#00FF9F" if per_spend_i >= 92.33 else "#FF4B4B"
+    color_disb_i = "#00FF9F" if per_disb_i >= 80 else "#FF4B4B"
+    color_spend_i = "#00FF9F" if per_spend_i >= 100 else "#FF4B4B"
 
     st.markdown("""<div style='text-align: left; font-size: 18px; font-weight: bold; margin-bottom: 10px;'>🔵 ภาพรวมทุกแผนงานบูรณาการ</div>""", unsafe_allow_html=True)
 
@@ -1483,6 +1483,7 @@ if show_footer:
         🔹 Code writer: **กุลธิดา สมศรี (70%)** และ **ChatGPT (30%)**  
         🔹 ค่าใช้จ่าย: ระบบไม่ได้ใช้งบประมาณแผ่นดิน ค่า chatGPT ผู้เขียนโค้ดออกค่าใช้จ่ายเอง
         """)
+
 
 
 
