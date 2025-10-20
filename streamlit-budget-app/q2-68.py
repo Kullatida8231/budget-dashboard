@@ -853,12 +853,13 @@ if "3️⃣ งบกลาง" in selected_menus:
 
 #--------------------------------------------------------------
 #--------------------------------------------------------------
+#--------------------------------------------------------------
 # ✅ SECTION 4: แผนบูรณาการ
 if "4️⃣ แผนบูรณาการ" in selected_menus:
     st.markdown("## 4️⃣ แผนบูรณาการ")
 
     # 🔹 Filter เฉพาะแผนงานบูรณาการ
-    df_plan = df[df["กลุ่มแผนงาน"] == "แผนงานบูรณาการ"]
+    df_plan = df[df["กลุ่มแผนงาน"] == "แผนงานบูรณาการ"].copy()
     df_reg = df_plan[df_plan["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายประจำ"]
     df_inv = df_plan[df_plan["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายลงทุน"]
 
@@ -899,51 +900,169 @@ if "4️⃣ แผนบูรณาการ" in selected_menus:
         </div>""",
         unsafe_allow_html=True
     )
-
     st.markdown(
         f"""&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         ในปีงบประมาณ พ.ศ. 2568 มีการจัดสรรงบประมาณสำหรับ
         **📍แผนงานบูรณาการ รวมทั้งสิ้น {total_prb:,.4f} ล้านบาท**
         มีงบประมาณหลังโอนเปลี่ยนแปลง **จำนวน {total_after:,.4f} ล้านบาท**
         โดยมีการเบิกจ่าย **จำนวน {total_disb:,.4f} ล้านบาท**
-        (คิดเป็น <span style="color:{color_disb}; font-weight:bold;">
-        {percent_disb:.2f}%</span> ของ งบฯ หลังโอน)
+        (คิดเป็น <span style="color:{color_disb}; font-weight:bold;">{percent_disb:.2f}%</span> ของ งบฯ หลังโอน)
         และมีการใช้จ่าย **จำนวน {total_spend:,.4f} ล้านบาท**
-        (คิดเป็น <span style="color:{color_spend}; font-weight:bold;">
-        {percent_spend:.2f}%</span> ของ งบฯ หลังโอน)
+        (คิดเป็น <span style="color:{color_spend}; font-weight:bold;">{percent_spend:.2f}%</span> ของ งบฯ หลังโอน)
         ทั้งนี้ สามารถจำแนกงบประมาณรายจ่ายออกเป็น 2 ประเภท ดังนี้""",
         unsafe_allow_html=True
     )
-
     if not df_reg.empty:
         st.markdown(
             f"""&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             **1. รายจ่ายประจำ** ได้รับจัดสรรงบประมาณ จำนวน **{prb_r:,.4f}** ล้านบาท
             มีงบประมาณหลังโอนเปลี่ยนแปลง จำนวน **{after_r:,.4f}** ล้านบาท
             โดยมีการเบิกจ่าย **{disb_r:,.4f}** ล้านบาท
-            (คิดเป็น <span style="color:{color_disb_r}; font-weight:bold;">
-            {per_disb_r:.2f}%</span> ของ งบฯ หลังโอน)
+            (คิดเป็น <span style="color:{color_disb_r}; font-weight:bold;">{per_disb_r:.2f}%</span> ของ งบฯ หลังโอน)
             และมีการใช้จ่าย จำนวน **{spend_r:,.4f}** ล้านบาท
-            (คิดเป็น <span style="color:{color_spend_r}; font-weight:bold;">
-            {per_spend_r:.2f}%</span> ของ งบฯ หลังโอน)""",
+            (คิดเป็น <span style="color:{color_spend_r}; font-weight:bold;">{per_spend_r:.2f}%</span> ของ งบฯ หลังโอน)""",
             unsafe_allow_html=True
         )
-
     if not df_inv.empty:
         st.markdown(
             f"""&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             **2. รายจ่ายลงทุน** ได้รับจัดสรรงบประมาณ **{prb_i:,.4f}** ล้านบาท
             มีงบประมาณหลังโอนเปลี่ยนแปลง จำนวน **{after_i:,.4f}** ล้านบาท
             โดยมีการเบิกจ่าย จำนวน **{disb_i:,.4f}** ล้านบาท
-            (คิดเป็น <span style="color:{color_disb_i}; font-weight:bold;">
-            {per_disb_i:.2f}%</span> ของ งบฯ หลังโอน)
+            (คิดเป็น <span style="color:{color_disb_i}; font-weight:bold;">{per_disb_i:.2f}%</span> ของ งบฯ หลังโอน)
             และมีการใช้จ่าย จำนวน **{spend_i:,.4f}** ล้านบาท
-            (คิดเป็น <span style="color:{color_spend_i}; font-weight:bold;">
-            {per_spend_i:.2f}%</span> ของ งบฯ หลังโอน)""",
+            (คิดเป็น <span style="color:{color_spend_i}; font-weight:bold;">{per_spend_i:.2f}%</span> ของ งบฯ หลังโอน)""",
+            unsafe_allow_html=True
+        )
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # --------------------------- แผนงานย่อย --------------------------- #
+    st.markdown(
+        """<div style='text-align: left; font-size: 18px; font-weight: bold; margin-bottom: 10px;'>
+        🔵 แยกตามรายแผนงานบูรณาการ
+        </div>""",
+        unsafe_allow_html=True
+    )
+
+    plan_options = df_plan["แผนงาน"].dropna().unique()
+    selected_plan = st.selectbox("🔍เลือกแผนงาน", sorted(plan_options))
+
+    df_plan_selected = df_plan[df_plan["แผนงาน"] == selected_plan]
+    df_plan_reg = df_plan_selected[df_plan_selected["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายประจำ"]
+    df_plan_inv = df_plan_selected[df_plan_selected["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายลงทุน"]
+
+    # เกณฑ์ไฮไลต์: ใช้จากตัวกรองขั้นสูงถ้ามี
+    th_overall_disb = th_overall_disb if 'th_overall_disb' in locals() else 94.0
+    th_reg_disb     = th_reg_disb     if 'th_reg_disb'     in locals() else 98.0
+    th_inv_disb     = th_inv_disb     if 'th_inv_disb'     in locals() else 80.0
+    th_spend        = th_spend        if 'th_spend'        in locals() else 100.0
+
+    def highlight_plan(row, disb_thres, spend_thres):
+        color_disb  = "#00FF9F" if row["%เบิกจ่าย"] >= disb_thres else "#FF4B4B"
+        color_spend = "#00FF9F" if row["%ใช้จ่าย"] >= spend_thres else "#FF4B4B"
+        return ["", "", "", "", f"color: {color_disb}", "", f"color: {color_spend}"]
+
+    def show_plan_table(df_subset, disb_thres, spend_thres, title=None):
+        group_cols = ["หน่วยงาน"]
+        sum_cols = ["พรบ.", "งบฯ หลังโอน", "เบิกจ่าย", "ใช้จ่าย"]
+        g = df_subset.groupby(group_cols, as_index=False)[sum_cols].sum(numeric_only=True)
+        g["%เบิกจ่าย"] = (g["เบิกจ่าย"] / g["งบฯ หลังโอน"]).replace([np.inf, -np.inf], 0).fillna(0) * 100
+        g["%ใช้จ่าย"] = (g["ใช้จ่าย"] / g["งบฯ หลังโอน"]).replace([np.inf, -np.inf], 0).fillna(0) * 100
+        g["%เบิกจ่าย"] = g["%เบิกจ่าย"].round(2)
+        g["%ใช้จ่าย"]  = g["%ใช้จ่าย"].round(2)
+        display_cols = ["หน่วยงาน", "พรบ.", "งบฯ หลังโอน", "เบิกจ่าย", "%เบิกจ่าย", "ใช้จ่าย", "%ใช้จ่าย"]
+        styled = (
+            g[display_cols]
+            .style
+            .format({
+                "พรบ.": "{:,.4f}",
+                "งบฯ หลังโอน": "{:,.4f}",
+                "เบิกจ่าย": "{:,.4f}",
+                "ใช้จ่าย": "{:,.4f}",
+                "%เบิกจ่าย": "{:,.2f}%",
+                "%ใช้จ่าย": "{:,.2f}%"
+            })
+            .apply(lambda row: highlight_plan(row, disb_thres, spend_thres), axis=1)
+        )
+        if title:
+            st.markdown(f"### {title}")
+        st.dataframe(styled, use_container_width=True)
+
+    # คำนวณรวมของแผนงานที่เลือก
+    total_prb_sp   = df_plan_selected["พรบ."].sum()
+    total_after_sp = df_plan_selected["งบฯ หลังโอน"].sum()
+    total_disb_sp  = df_plan_selected["เบิกจ่าย"].sum()
+    total_spend_sp = df_plan_selected["ใช้จ่าย"].sum()
+    percent_disb_sp = round((total_disb_sp / total_after_sp) * 100, 2) if total_after_sp else 0
+    percent_spend_sp = round((total_spend_sp / total_after_sp) * 100, 2) if total_after_sp else 0
+    color_disb_sp  = "#00FF9F" if percent_disb_sp >= th_overall_disb else "#FF4B4B"
+    color_spend_sp = "#00FF9F" if percent_spend_sp >= th_spend else "#FF4B4B"
+
+    st.markdown(
+        f"""&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        มีการจัดสรรงบประมาณสำหรับ **📝{selected_plan}**
+        จำนวน **{total_prb_sp:,.4f} ล้านบาท**
+        มีงบประมาณหลังโอนเปลี่ยนแปลง จำนวน **{total_after_sp:,.4f} ล้านบาท**
+        มีการเบิกจ่าย จำนวน **{total_disb_sp:,.4f} ล้านบาท**
+        (คิดเป็น <span style="color:{color_disb_sp}; font-weight:bold;">{percent_disb_sp:.2f}%</span> ของ งบฯ หลังโอน)
+        และมีการใช้จ่าย จำนวน **{total_spend_sp:,.4f} ล้านบาท**
+        (คิดเป็น <span style="color:{color_spend_sp}; font-weight:bold;">{percent_spend_sp:.2f}%</span> ของ งบฯ หลังโอน) 
+        ทั้งนี้ สามารถจำแนกงบประมาณรายจ่ายออกเป็น 2 ประเภท ดังนี้""",
+        unsafe_allow_html=True
+    )
+    if not df_plan_reg.empty:
+        prb_r_sp   = df_plan_reg["พรบ."].sum()
+        after_r_sp = df_plan_reg["งบฯ หลังโอน"].sum()
+        disb_r_sp  = df_plan_reg["เบิกจ่าย"].sum()
+        spend_r_sp = df_plan_reg["ใช้จ่าย"].sum()
+        per_disb_r_sp  = round((disb_r_sp / after_r_sp) * 100, 2) if after_r_sp else 0
+        per_spend_r_sp = round((spend_r_sp / after_r_sp) * 100, 2) if after_r_sp else 0
+        color_disb_r_sp  = "#00FF9F" if per_disb_r_sp >= th_reg_disb else "#FF4B4B"
+        color_spend_r_sp = "#00FF9F" if per_spend_r_sp >= th_spend else "#FF4B4B"
+        st.markdown(
+            f"""&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            **1. รายจ่ายประจำ** ได้รับจัดสรรงบประมาณ **{prb_r_sp:,.4f} ล้านบาท**
+            มีงบประมาณหลังโอนเปลี่ยนแปลง **{after_r_sp:,.4f} ล้านบาท**
+            เบิกจ่าย **{disb_r_sp:,.4f} ล้านบาท**
+            (คิดเป็น <span style="color:{color_disb_r_sp}; font-weight:bold;">{per_disb_r_sp:.2f}%</span> ของ งบฯ หลังโอน)
+            ใช้จ่าย **{spend_r_sp:,.4f} ล้านบาท**
+            (คิดเป็น <span style="color:{color_spend_r_sp}; font-weight:bold;">{per_spend_r_sp:.2f}%</span> ของ งบฯ หลังโอน)""",
+            unsafe_allow_html=True
+        )
+    if not df_plan_inv.empty:
+        prb_i_sp   = df_plan_inv["พรบ."].sum()
+        after_i_sp = df_plan_inv["งบฯ หลังโอน"].sum()
+        disb_i_sp  = df_plan_inv["เบิกจ่าย"].sum()
+        spend_i_sp = df_plan_inv["ใช้จ่าย"].sum()
+        per_disb_i_sp  = round((disb_i_sp / after_i_sp) * 100, 2) if after_i_sp else 0
+        per_spend_i_sp = round((spend_i_sp / after_i_sp) * 100, 2) if after_i_sp else 0
+        color_disb_i_sp  = "#00FF9F" if per_disb_i_sp >= th_inv_disb else "#FF4B4B"
+        color_spend_i_sp = "#00FF9F" if per_spend_i_sp >= th_spend else "#FF4B4B"
+        st.markdown(
+            f"""&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            **2. รายจ่ายลงทุน** ได้รับจัดสรรงบประมาณ **{prb_i_sp:,.4f} ล้านบาท**
+            มีงบประมาณหลังโอนเปลี่ยนแปลง **{after_i_sp:,.4f} ล้านบาท**
+            เบิกจ่าย **{disb_i_sp:,.4f} ล้านบาท**
+            (คิดเป็น <span style="color:{color_disb_i_sp}; font-weight:bold;">{per_disb_i_sp:.2f}%</span> ของ งบฯ หลังโอน)
+            ใช้จ่าย **{spend_i_sp:,.4f} ล้านบาท**
+            (คิดเป็น <span style="color:{color_spend_i_sp}; font-weight:bold;">{per_spend_i_sp:.2f}%</span> ของ งบฯ หลังโอน)""",
             unsafe_allow_html=True
         )
 
-    st.markdown("<br>", unsafe_allow_html=True)
+    # ✅ Tabs สำหรับตาราง
+    tab1, tab2, tab3 = st.tabs(["📊 ภาพรวม", "🏢 รายจ่ายประจำ", "🏗️ รายจ่ายลงทุน"])
+    with tab1:
+        show_plan_table(df_plan_selected, disb_thres=th_overall_disb, spend_thres=th_spend, title=None)
+    with tab2:
+        if not df_plan_reg.empty:
+            show_plan_table(df_plan_reg, disb_thres=th_reg_disb, spend_thres=th_spend, title=None)
+        else:
+            st.info("ไม่มีข้อมูลรายจ่ายประจำ")
+    with tab3:
+        if not df_plan_inv.empty:
+            show_plan_table(df_plan_inv, disb_thres=th_inv_disb, spend_thres=th_spend, title=None)
+        else:
+            st.info("ไม่มีข้อมูลรายจ่ายลงทุน")
 
     # ======================== ตาราง: แผนงานบูรณาการ แยกภาพรวม/ประจำ/ลงทุน ======================== #
     st.markdown("<hr>", unsafe_allow_html=True)
@@ -954,14 +1073,10 @@ if "4️⃣ แผนบูรณาการ" in selected_menus:
         unsafe_allow_html=True
     )
 
-    # ------------------ การคำนวณตารางสรุป ------------------ #
+    # ------------------ การคำนวณตารางสรุประดับ "แผนงาน" ------------------ #
+    # (นำเข้าในส่วนบนของสคริปต์อยู่แล้วก็ได้)
     import numpy as np
     import pandas as pd
-
-    th_overall_disb = th_overall_disb if 'th_overall_disb' in locals() else 94.0
-    th_reg_disb = th_reg_disb if 'th_reg_disb' in locals() else 98.0
-    th_inv_disb = th_inv_disb if 'th_inv_disb' in locals() else 80.0
-    th_spend = th_spend if 'th_spend' in locals() else 100.0
 
     def _safe_pct(numer, denom):
         try:
@@ -972,64 +1087,42 @@ if "4️⃣ แผนบูรณาการ" in selected_menus:
     def _collapse(df_subset, suffix):
         """สรุปยอดตามแผนงาน แล้วใส่ suffix แยกชุดคอลัมน์"""
         sum_cols = ["พรบ.", "งบฯ หลังโอน", "เบิกจ่าย", "ใช้จ่าย"]
-        g = (
-            df_subset.groupby("แผนงาน", as_index=False)[sum_cols]
-            .sum(numeric_only=True)
-        )
-        g[f"%เบิกจ่าย{suffix}"] = [
-            _safe_pct(x, y) for x, y in zip(g["เบิกจ่าย"], g["งบฯ หลังโอน"])
-        ]
-        g[f"%ใช้จ่าย{suffix}"] = [
-            _safe_pct(x, y) for x, y in zip(g["ใช้จ่าย"], g["งบฯ หลังโอน"])
-        ]
-        g = g.rename(
-            columns={
-                "พรบ.": f"พรบ.{suffix}",
-                "งบฯ หลังโอน": f"งบฯ หลังโอน{suffix}",
-                "เบิกจ่าย": f"เบิกจ่าย{suffix}",
-                "ใช้จ่าย": f"ใช้จ่าย{suffix}",
-            }
-        )
+        g = df_subset.groupby("แผนงาน", as_index=False)[sum_cols].sum(numeric_only=True)
+        g[f"%เบิกจ่าย{suffix}"] = [ _safe_pct(x, y) for x, y in zip(g["เบิกจ่าย"], g["งบฯ หลังโอน"]) ]
+        g[f"%ใช้จ่าย{suffix}"]  = [ _safe_pct(x, y) for x, y in zip(g["ใช้จ่าย"],  g["งบฯ หลังโอน"]) ]
+        g = g.rename(columns={
+            "พรบ.": f"พรบ.{suffix}",
+            "งบฯ หลังโอน": f"งบฯ หลังโอน{suffix}",
+            "เบิกจ่าย": f"เบิกจ่าย{suffix}",
+            "ใช้จ่าย": f"ใช้จ่าย{suffix}",
+        })
         g.replace([np.inf, -np.inf], 0, inplace=True)
         g.fillna(0, inplace=True)
         return g
 
-    # 1) กรองเฉพาะแผนงานบูรณาการ
     df_plan_all = df[df["กลุ่มแผนงาน"] == "แผนงานบูรณาการ"].copy()
-
-    # 2) แยกประเภท
     df_overall = _collapse(df_plan_all, " (รวม)")
     df_regonly = _collapse(df_plan_all[df_plan_all["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายประจำ"], " (ประจำ)")
     df_invonly = _collapse(df_plan_all[df_plan_all["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายลงทุน"], " (ลงทุน)")
 
-    # 3) รวมเป็นตารางเดียว
-    plan_table = (
-        df_overall.merge(df_regonly, on="แผนงาน", how="outer")
-        .merge(df_invonly, on="แผนงาน", how="outer")
-    )
+    plan_table = df_overall.merge(df_regonly, on="แผนงาน", how="outer").merge(df_invonly, on="แผนงาน", how="outer")
 
-    # 4) เรียงลำดับ
     sort_key = "งบฯ หลังโอน (รวม)" if "งบฯ หลังโอน (รวม)" in plan_table.columns else None
     if sort_key:
         plan_table = plan_table.sort_values(sort_key, ascending=False)
 
-    # 5) เลือกคอลัมน์แสดงผล
     display_cols = [
         "แผนงาน",
         # รวม
-        "พรบ. (รวม)", "งบฯ หลังโอน (รวม)", "เบิกจ่าย (รวม)",
-        "%เบิกจ่าย (รวม)", "ใช้จ่าย (รวม)", "%ใช้จ่าย (รวม)",
+        "พรบ. (รวม)", "งบฯ หลังโอน (รวม)", "เบิกจ่าย (รวม)", "%เบิกจ่าย (รวม)", "ใช้จ่าย (รวม)", "%ใช้จ่าย (รวม)",
         # ประจำ
-        "พรบ. (ประจำ)", "งบฯ หลังโอน (ประจำ)", "เบิกจ่าย (ประจำ)",
-        "%เบิกจ่าย (ประจำ)", "ใช้จ่าย (ประจำ)", "%ใช้จ่าย (ประจำ)",
+        "พรบ. (ประจำ)", "งบฯ หลังโอน (ประจำ)", "เบิกจ่าย (ประจำ)", "%เบิกจ่าย (ประจำ)", "ใช้จ่าย (ประจำ)", "%ใช้จ่าย (ประจำ)",
         # ลงทุน
-        "พรบ. (ลงทุน)", "งบฯ หลังโอน (ลงทุน)", "เบิกจ่าย (ลงทุน)",
-        "%เบิกจ่าย (ลงทุน)", "ใช้จ่าย (ลงทุน)", "%ใช้จ่าย (ลงทุน)",
+        "พรบ. (ลงทุน)", "งบฯ หลังโอน (ลงทุน)", "เบิกจ่าย (ลงทุน)", "%เบิกจ่าย (ลงทุน)", "ใช้จ่าย (ลงทุน)", "%ใช้จ่าย (ลงทุน)",
     ]
     display_cols = [c for c in display_cols if c in plan_table.columns]
     table_show = plan_table[display_cols].copy()
 
-    # 6) ฟังก์ชันไฮไลต์
     def _row_style(row):
         styles = []
         for col in table_show.columns:
@@ -1050,26 +1143,12 @@ if "4️⃣ แผนบูรณาการ" in selected_menus:
         return styles
 
     fmt_money = "{:,.4f}"
-    fmt_pct = "{:,.2f}%"
+    fmt_pct   = "{:,.2f}%"
+    fmt_dict = {col: fmt_money for col in table_show.columns if any(k in col for k in ["พรบ.", "งบฯ หลังโอน", "เบิกจ่าย", "ใช้จ่าย"])}
+    fmt_dict.update({col: fmt_pct for col in table_show.columns if "%เบิกจ่าย" in col or "%ใช้จ่าย" in col})
 
-    fmt_dict = {
-        col: fmt_money
-        for col in table_show.columns
-        if any(k in col for k in ["พรบ.", "งบฯ หลังโอน", "เบิกจ่าย", "ใช้จ่าย"])
-    }
-    fmt_dict.update({
-        col: fmt_pct
-        for col in table_show.columns
-        if "%เบิกจ่าย" in col or "%ใช้จ่าย" in col
-    })
+    styled_table = table_show.style.format(fmt_dict).apply(_row_style, axis=1)
 
-    styled_table = (
-        table_show.style
-        .format(fmt_dict)
-        .apply(_row_style, axis=1)
-    )
-
-    # 7) แสดงผล + ปุ่มดาวน์โหลด
     st.dataframe(styled_table, use_container_width=True)
     st.download_button(
         "⬇️ ดาวน์โหลดตารางแผนงาน (CSV)",
@@ -1077,117 +1156,6 @@ if "4️⃣ แผนบูรณาการ" in selected_menus:
         file_name="integration_plans_overall_recurrent_investment.csv",
         mime="text/csv"
     )
-
-
-    #--------------------------- แผนงานย่อย ---------------------------#
-    st.markdown("""<div style='text-align: left; font-size: 18px; font-weight: bold; margin-bottom: 10px;'>🔵 แยกตามรายแผนงานบูรณาการ</div>""", unsafe_allow_html=True)
-
-    df_plan = df[df["กลุ่มแผนงาน"] == "แผนงานบูรณาการ"].copy()
-    plan_options = df_plan["แผนงาน"].dropna().unique()
-    selected_plan = st.selectbox("🔍เลือกแผนงาน", sorted(plan_options))
-
-    df_plan_selected = df_plan[df_plan["แผนงาน"] == selected_plan]
-    df_plan_reg = df_plan_selected[df_plan_selected["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายประจำ"]
-    df_plan_inv = df_plan_selected[df_plan_selected["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายลงทุน"]
-
-    def highlight_plan(row, disb_thres, spend_thres):
-        color_disb = "#00FF9F" if row["%เบิกจ่าย"] >= disb_thres else "#FF4B4B"
-        color_spend = "#00FF9F" if row["%ใช้จ่าย"] >= spend_thres else "#FF4B4B"
-        return ["", "", "", "", f"color: {color_disb}", "", f"color: {color_spend}"]
-
-    def show_plan_table(df_subset, title, disb_thres, spend_thres):
-        group_cols = ["หน่วยงาน"]
-        sum_cols = ["พรบ.", "งบฯ หลังโอน", "เบิกจ่าย", "ใช้จ่าย"]
-        df_grouped = df_subset.groupby(group_cols, as_index=False)[sum_cols].sum(numeric_only=True)
-        df_grouped["%เบิกจ่าย"] = round((df_grouped["เบิกจ่าย"] / df_grouped["งบฯ หลังโอน"]) * 100, 2)
-        df_grouped["%ใช้จ่าย"] = round((df_grouped["ใช้จ่าย"] / df_grouped["งบฯ หลังโอน"]) * 100, 2)
-        display_cols = ["หน่วยงาน", "พรบ.", "งบฯ หลังโอน", "เบิกจ่าย", "%เบิกจ่าย", "ใช้จ่าย", "%ใช้จ่าย"]
-        styled = df_grouped[display_cols].style.format({
-            "พรบ.": "{:,.4f}",
-            "งบฯ หลังโอน": "{:,.4f}",
-            "เบิกจ่าย": "{:,.4f}",
-            "ใช้จ่าย": "{:,.4f}",
-            "%เบิกจ่าย": "{:,.2f}%",
-            "%ใช้จ่าย": "{:,.2f}%"
-        }).apply(lambda row: highlight_plan(row, disb_thres, spend_thres), axis=1)
-        st.markdown(f"### {title}")
-        st.dataframe(styled, use_container_width=True)
-
-    # คำนวณรวม
-    total_prb = df_plan_selected["พรบ."].sum()
-    total_after = df_plan_selected["งบฯ หลังโอน"].sum()
-    total_disb = df_plan_selected["เบิกจ่าย"].sum()
-    total_spend = df_plan_selected["ใช้จ่าย"].sum()
-    percent_disb = round((total_disb / total_after) * 100, 2) if total_after else 0
-    percent_spend = round((total_spend / total_after) * 100, 2) if total_after else 0
-    color_disb = "#00FF9F" if percent_disb >= 94 else "#FF4B4B"
-    color_spend = "#00FF9F" if percent_spend >= 100 else "#FF4B4B"
-
-    st.markdown(f"""&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; มีการจัดสรรงบประมาณสำหรับ**📝{selected_plan}**  จำนวน **{total_prb:,.4f} ล้านบาท**  มีงบประมาณหลังโอนเปลี่ยนแปลง จำนวน **{total_after:,.4f} ล้านบาท**  มีการเบิกจ่าย จำนวน **{total_disb:,.4f} ล้านบาท**  (คิดเป็น <span style="color:{color_disb}; font-weight:bold;">{percent_disb:.2f}%</span> ของ งบฯ หลังโอน)  และมีการใช้จ่าย จำนวน **{total_spend:,.4f} ล้านบาท**  (คิดเป็น <span style="color:{color_spend}; font-weight:bold;">{percent_spend:.2f}%</span> ของ งบฯ หลังโอน) ทั้งนี้ สามารถจำแนกงบประมาณรายจ่ายออกเป็น 2 ประเภท ดังนี้""", unsafe_allow_html=True)
-
-    if not df_plan_reg.empty:
-        prb_r = df_plan_reg["พรบ."].sum()
-        after_r = df_plan_reg["งบฯ หลังโอน"].sum()
-        disb_r = df_plan_reg["เบิกจ่าย"].sum()
-        spend_r = df_plan_reg["ใช้จ่าย"].sum()
-        per_disb_r = round((disb_r / after_r) * 100, 2) if after_r else 0
-        per_spend_r = round((spend_r / after_r) * 100, 2) if after_r else 0
-        color_disb_r = "#00FF9F" if per_disb_r >= 98 else "#FF4B4B"
-        color_spend_r = "#00FF9F" if per_spend_r >= 100 else "#FF4B4B"
-        st.markdown(f"""&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **1. รายจ่ายประจำ** ได้รับจัดสรรงบประมาณ **{prb_r:,.4f} ล้านบาท**  มีงบประมาณหลังโอนเปลี่ยนแปลง จำนวน **{after_r:,.4f} ล้านบาท**  เบิกจ่าย **{disb_r:,.4f} ล้านบาท**  (คิดเป็น <span style="color:{color_disb_r}; font-weight:bold;">{per_disb_r:.2f}%</span> ของ งบฯ หลังโอน)  ใช้จ่าย **{spend_r:,.4f} ล้านบาท**  (คิดเป็น <span style="color:{color_spend_r}; font-weight:bold;">{per_spend_r:.2f}%</span> ของ งบฯ หลังโอน)""", unsafe_allow_html=True)
-
-    if not df_plan_inv.empty:
-        prb_i = df_plan_inv["พรบ."].sum()
-        after_i = df_plan_inv["งบฯ หลังโอน"].sum()
-        disb_i = df_plan_inv["เบิกจ่าย"].sum()
-        spend_i = df_plan_inv["ใช้จ่าย"].sum()
-        per_disb_i = round((disb_i / after_i) * 100, 2) if after_i else 0
-        per_spend_i = round((spend_i / after_i) * 100, 2) if after_i else 0
-        color_disb_i = "#00FF9F" if per_disb_i >= 80 else "#FF4B4B"
-        color_spend_i = "#00FF9F" if per_spend_i >= 100 else "#FF4B4B"
-        st.markdown(f"""&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **2. รายจ่ายลงทุน** ได้รับจัดสรรงบประมาณ **{prb_i:,.4f} ล้านบาท**  มีงบประมาณหลังโอนเปลี่ยนแปลง จำนวน **{after_i:,.4f} ล้านบาท**  เบิกจ่าย **{disb_i:,.4f} ล้านบาท**  (คิดเป็น <span style="color:{color_disb_i}; font-weight:bold;">{per_disb_i:.2f}%</span> ของ งบฯ หลังโอน)  ใช้จ่าย **{spend_i:,.4f} ล้านบาท**  (คิดเป็น <span style="color:{color_spend_i}; font-weight:bold;">{per_spend_i:.2f}%</span> ของ งบฯ หลังโอน)""", unsafe_allow_html=True)
-
-    # ✅ Tabs สำหรับตาราง
-    tab1, tab2, tab3 = st.tabs(["📊 ภาพรวม", "🏢 รายจ่ายประจำ", "🏗️ รายจ่ายลงทุน"])
-
-    # ฟังก์ชันแสดงตาราง
-    def show_plan_table(df_subset, disb_thres, spend_thres):
-        group_cols = ["หน่วยงาน"]
-        sum_cols = ["พรบ.", "งบฯ หลังโอน", "เบิกจ่าย", "ใช้จ่าย"]
-        df_grouped = df_subset.groupby(group_cols, as_index=False)[sum_cols].sum(numeric_only=True)
-        df_grouped["%เบิกจ่าย"] = round((df_grouped["เบิกจ่าย"] / df_grouped["งบฯ หลังโอน"]) * 100, 2)
-        df_grouped["%ใช้จ่าย"] = round((df_grouped["ใช้จ่าย"] / df_grouped["งบฯ หลังโอน"]) * 100, 2)
-
-        display_cols = ["หน่วยงาน", "พรบ.", "งบฯ หลังโอน", "เบิกจ่าย", "%เบิกจ่าย", "ใช้จ่าย", "%ใช้จ่าย"]
-
-        styled = df_grouped[display_cols].style.format({
-            "พรบ.": "{:,.4f}",
-            "งบฯ หลังโอน": "{:,.4f}",
-            "เบิกจ่าย": "{:,.4f}",
-            "ใช้จ่าย": "{:,.4f}",
-            "%เบิกจ่าย": "{:,.2f}%",
-            "%ใช้จ่าย": "{:,.2f}%"
-        }).apply(lambda row: highlight_plan(row, disb_thres, spend_thres), axis=1)
-
-        st.dataframe(styled, use_container_width=True)
-
-    # 📊 Tab 1: ภาพรวม
-    with tab1:
-        show_plan_table(df_plan_selected, disb_thres=94, spend_thres=100)
-
-    # 🏢 Tab 2: รายจ่ายประจำ
-    with tab2:
-        if not df_plan_reg.empty:
-            show_plan_table(df_plan_reg, disb_thres=98, spend_thres=100)
-        else:
-            st.info("ไม่มีข้อมูลรายจ่ายประจำ")
-
-    # 🏗️ Tab 3: รายจ่ายลงทุน
-    with tab3:
-        if not df_plan_inv.empty:
-            show_plan_table(df_plan_inv, disb_thres=80, spend_thres=100)
-        else:
-            st.info("ไม่มีข้อมูลรายจ่ายลงทุน")
 
 
 #--------------------------------------------------------------
@@ -1659,6 +1627,7 @@ if show_footer:
         🔹 Code writer: **กุลธิดา สมศรี (70%)** และ **ChatGPT (30%)**  
         🔹 ค่าใช้จ่าย: ระบบไม่ได้ใช้งบประมาณแผ่นดิน ค่า chatGPT ผู้เขียนโค้ดออกค่าใช้จ่ายเอง
         """)
+
 
 
 
