@@ -920,32 +920,48 @@ import numpy as np
 import pandas as pd
 
 def _safe_pct(numer, denom):
+    """คำนวณเปอร์เซ็นต์อย่างปลอดภัย"""
     try:
         return round((numer / denom) * 100, 2) if denom and denom != 0 else 0.00
     except Exception:
         return 0.00
 
+
 def _collapse(df_subset, suffix):
     """สรุปยอดตามแผนงาน แล้วเติม suffix แยกชุดคอลัมน์"""
     sum_cols = ["พรบ.", "งบฯ หลังโอน", "เบิกจ่าย", "ใช้จ่าย"]
     g = df_subset.groupby("แผนงาน", as_index=False)[sum_cols].sum(numeric_only=True)
-    g[f"%เบิกจ่าย{suffix}"] = [_safe_pct(x, y) for x, y in zip(g["เบิกจ่าย"], g["งบฯ หลังโอน"])]
-    g[f"%ใช้จ่าย{suffix}"]  = [_safe_pct(x, y) for x, y in zip(g["ใช้จ่าย"], g["งบฯ หลังโอน"])]
-    g = g.rename(columns={
-        "พรบ.": f"พรบ.{suffix}",
-        "งบฯ หลังโอน": f"งบฯ หลังโอน{suffix}",
-        "เบิกจ่าย": f"เบิกจ่าย{suffix}",
-        "ใช้จ่าย": f"ใช้จ่าย{suffix}",
-    })
+
+    g[f"%เบิกจ่าย{suffix}"] = [
+        _safe_pct(x, y) for x, y in zip(g["เบิกจ่าย"], g["งบฯ หลังโอน"])
+    ]
+    g[f"%ใช้จ่าย{suffix}"] = [
+        _safe_pct(x, y) for x, y in zip(g["ใช้จ่าย"], g["งบฯ หลังโอน"])
+    ]
+
+    g = g.rename(
+        columns={
+            "พรบ.": f"พรบ.{suffix}",
+            "งบฯ หลังโอน": f"งบฯ หลังโอน{suffix}",
+            "เบิกจ่าย": f"เบิกจ่าย{suffix}",
+            "ใช้จ่าย": f"ใช้จ่าย{suffix}",
+        }
+    )
     g.replace([np.inf, -np.inf], 0, inplace=True)
     g.fillna(0, inplace=True)
     return g
 
+
 # ---------- Build three views ----------
 df_plan_all = df_plan.copy()
-df_overall  = _collapse(df_plan_all, " (รวม)")
-df_regonly  = _collapse(df_plan_all[df_plan_all["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายประจำ"], " (ประจำ)")
-df_invonly  = _collapse(df_plan_all[df_plan_all["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายลงทุน"], " (ลงทุน)")
+df_overall = _collapse(df_plan_all, " (รวม)")
+df_regonly = _collapse(
+    df_plan_all[df_plan_all["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายประจำ"], " (ประจำ)"
+)
+df_invonly = _collapse(
+    df_plan_all[df_plan_all["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายลงทุน"], " (ลงทุน)"
+)
+
 
 # ---------- Select display columns ----------
 cols_overall = [
@@ -965,6 +981,7 @@ view_overall = df_overall[[c for c in cols_overall if c in df_overall.columns]].
 view_reg     = df_regonly[[c for c in cols_reg if c in df_regonly.columns]].copy()
 view_inv     = df_invonly[[c for c in cols_inv if c in df_invonly.columns]].copy()
 
+
 # ---------- Sort by total budget ----------
 if "งบฯ หลังโอน (รวม)" in view_overall.columns:
     view_overall = view_overall.sort_values("งบฯ หลังโอน (รวม)", ascending=False)
@@ -973,21 +990,24 @@ if "งบฯ หลังโอน (ประจำ)" in view_reg.columns:
 if "งบฯ หลังโอน (ลงทุน)" in view_inv.columns:
     view_inv = view_inv.sort_values("งบฯ หลังโอน (ลงทุน)", ascending=False)
 
+
 # ---------- Style & Threshold ----------
 fmt_money = "{:,.4f}"
 fmt_pct   = "{:,.2f}%"
 
 def _style_df(df_show, mode: str):
-    """mode in {'overall','reg','inv'}"""
+    """mode in {'overall', 'reg', 'inv'}"""
     if df_show.empty:
         return df_show.style
 
     fmt_dict = {
-        col: fmt_money for col in df_show.columns
+        col: fmt_money
+        for col in df_show.columns
         if any(k in col for k in ["พรบ.", "งบฯ หลังโอน", "เบิกจ่าย", "ใช้จ่าย"])
     }
     fmt_dict.update({
-        col: fmt_pct for col in df_show.columns
+        col: fmt_pct
+        for col in df_show.columns
         if "%เบิกจ่าย" in col or "%ใช้จ่าย" in col
     })
 
@@ -997,23 +1017,50 @@ def _style_df(df_show, mode: str):
             style = ""
             if mode == "overall":
                 if col == "%เบิกจ่าย (รวม)":
-                    style = "color: #00FF9F;" if row[col] >= th_overall_disb else "color: #FF4B4B;"
+                    style = (
+                        "color: #00FF9F;"
+                        if row[col] >= th_overall_disb
+                        else "color: #FF4B4B;"
+                    )
                 elif col == "%ใช้จ่าย (รวม)":
-                    style = "color: #00FF9F;" if row[col] >= th_spend else "color: #FF4B4B;"
+                    style = (
+                        "color: #00FF9F;"
+                        if row[col] >= th_spend
+                        else "color: #FF4B4B;"
+                    )
+
             elif mode == "reg":
                 if col == "%เบิกจ่าย (ประจำ)":
-                    style = "color: #00FF9F;" if row[col] >= th_reg_disb else "color: #FF4B4B;"
+                    style = (
+                        "color: #00FF9F;"
+                        if row[col] >= th_reg_disb
+                        else "color: #FF4B4B;"
+                    )
                 elif col == "%ใช้จ่าย (ประจำ)":
-                    style = "color: #00FF9F;" if row[col] >= th_spend else "color: #FF4B4B;"
+                    style = (
+                        "color: #00FF9F;"
+                        if row[col] >= th_spend
+                        else "color: #FF4B4B;"
+                    )
+
             elif mode == "inv":
                 if col == "%เบิกจ่าย (ลงทุน)":
-                    style = "color: #00FF9F;" if row[col] >= th_inv_disb else "color: #FF4B4B;"
+                    style = (
+                        "color: #00FF9F;"
+                        if row[col] >= th_inv_disb
+                        else "color: #FF4B4B;"
+                    )
                 elif col == "%ใช้จ่าย (ลงทุน)":
-                    style = "color: #00FF9F;" if row[col] >= th_spend else "color: #FF4B4B;"
+                    style = (
+                        "color: #00FF9F;"
+                        if row[col] >= th_spend
+                        else "color: #FF4B4B;"
+                    )
             styles.append(style)
         return styles
 
     return df_show.style.format(fmt_dict).apply(_row_style, axis=1)
+
 
 # ---------- UI: ปุ่มเลือกตาราง ----------
 if "plan_view" not in st.session_state:
@@ -1029,6 +1076,7 @@ with c2:
 with c3:
     if st.button("🏗️ แสดง: รายจ่ายลงทุน", use_container_width=True):
         st.session_state.plan_view = "inv"
+
 
 # ---------- Render ตามปุ่มที่เลือก ----------
 if st.session_state.plan_view == "overall":
@@ -1653,6 +1701,7 @@ if show_footer:
         🔹 Code writer: **กุลธิดา สมศรี (70%)** และ **ChatGPT (30%)**  
         🔹 ค่าใช้จ่าย: ระบบไม่ได้ใช้งบประมาณแผ่นดิน ค่า chatGPT ผู้เขียนโค้ดออกค่าใช้จ่ายเอง
         """)
+
 
 
 
