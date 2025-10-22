@@ -977,7 +977,7 @@ def _collapse(df_subset, suffix):
     sum_cols = ["พรบ.", "งบฯ หลังโอน", "เบิกจ่าย", "ใช้จ่าย"]
     g = df_subset.groupby("แผนงาน", as_index=False)[sum_cols].sum(numeric_only=True)
     g[f"%เบิกจ่าย{suffix}"] = [_safe_pct(x, y) for x, y in zip(g["เบิกจ่าย"], g["งบฯ หลังโอน"])]
-    g[f"%ใช้จ่าย{suffix}"]  = [_safe_pct(x, y) for x, y in zip(g["ใช้จ่าย"], g["งบฯ หลังโอน"])]
+    g[f"%ใช้จ่าย{suffix}"]  = [_safe_pct(x, y) for x, y in zip(g["ใช้จ่าย"],  g["งบฯ หลังโอน"])]
     g = g.rename(columns={
         "พรบ.": f"พรบ.{suffix}",
         "งบฯ หลังโอน": f"งบฯ หลังโอน{suffix}",
@@ -992,25 +992,16 @@ def _collapse(df_subset, suffix):
 df_plan_all = df_plan.copy()
 df_overall  = _collapse(df_plan_all, " (รวม)")
 df_regonly  = _collapse(df_plan_all[df_plan_all["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายประจำ"], " (ประจำ)")
-df_invonly  = _collapse(df_plan_all[df_plan_all["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายลงทุน"], " (ลงทุน)")
+df_invonly  = _collapse(df_plan_all[df_plan_all["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายลงทุน"],  " (ลงทุน)")
 
 # ---------- Select display columns ----------
-cols_overall = [
-    "แผนงาน", "พรบ. (รวม)", "งบฯ หลังโอน (รวม)", "เบิกจ่าย (รวม)",
-    "%เบิกจ่าย (รวม)", "ใช้จ่าย (รวม)", "%ใช้จ่าย (รวม)"
-]
-cols_reg = [
-    "แผนงาน", "พรบ. (ประจำ)", "งบฯ หลังโอน (ประจำ)", "เบิกจ่าย (ประจำ)",
-    "%เบิกจ่าย (ประจำ)", "ใช้จ่าย (ประจำ)", "%ใช้จ่าย (ประจำ)"
-]
-cols_inv = [
-    "แผนงาน", "พรบ. (ลงทุน)", "งบฯ หลังโอน (ลงทุน)", "เบิกจ่าย (ลงทุน)",
-    "%เบิกจ่าย (ลงทุน)", "ใช้จ่าย (ลงทุน)", "%ใช้จ่าย (ลงทุน)"
-]
+cols_overall = ["แผนงาน","พรบ. (รวม)","งบฯ หลังโอน (รวม)","เบิกจ่าย (รวม)","%เบิกจ่าย (รวม)","ใช้จ่าย (รวม)","%ใช้จ่าย (รวม)"]
+cols_reg     = ["แผนงาน","พรบ. (ประจำ)","งบฯ หลังโอน (ประจำ)","เบิกจ่าย (ประจำ)","%เบิกจ่าย (ประจำ)","ใช้จ่าย (ประจำ)","%ใช้จ่าย (ประจำ)"]
+cols_inv     = ["แผนงาน","พรบ. (ลงทุน)","งบฯ หลังโอน (ลงทุน)","เบิกจ่าย (ลงทุน)","%เบิกจ่าย (ลงทุน)","ใช้จ่าย (ลงทุน)","%ใช้จ่าย (ลงทุน)"]
 
 view_overall = df_overall[[c for c in cols_overall if c in df_overall.columns]].copy()
-view_reg     = df_regonly[[c for c in cols_reg if c in df_regonly.columns]].copy()
-view_inv     = df_invonly[[c for c in cols_inv if c in df_invonly.columns]].copy()
+view_reg     = df_regonly[[c for c in cols_reg     if c in df_regonly.columns]].copy()
+view_inv     = df_invonly[[c for c in cols_inv     if c in df_invonly.columns]].copy()
 
 # ---------- Sort by total budget ----------
 if "งบฯ หลังโอน (รวม)" in view_overall.columns:
@@ -1029,14 +1020,8 @@ def _style_df(df_show, mode: str):
     if df_show.empty:
         return df_show.style
 
-    fmt_dict = {
-        col: fmt_money for col in df_show.columns
-        if any(k in col for k in ["พรบ.", "งบฯ หลังโอน", "เบิกจ่าย", "ใช้จ่าย"])
-    }
-    fmt_dict.update({
-        col: fmt_pct for col in df_show.columns
-        if "%เบิกจ่าย" in col or "%ใช้จ่าย" in col
-    })
+    fmt_dict = {col: fmt_money for col in df_show.columns if any(k in col for k in ["พรบ.", "งบฯ หลังโอน", "เบิกจ่าย", "ใช้จ่าย"])}
+    fmt_dict.update({col: fmt_pct for col in df_show.columns if "%เบิกจ่าย" in col or "%ใช้จ่าย" in col})
 
     def _row_style(row):
         styles = []
@@ -1062,22 +1047,11 @@ def _style_df(df_show, mode: str):
 
     return df_show.style.format(fmt_dict).apply(_row_style, axis=1)
 
-# ---------- UI: ปุ่มเลือกตาราง ----------
+# ---------- State & default ----------
 if "plan_view" not in st.session_state:
     st.session_state.plan_view = "overall"  # ค่าเริ่มต้น
 
-c1, c2, c3 = st.columns(3)
-with c1:
-    if st.button("📊 แสดง: ภาพรวม", use_container_width=True):
-        st.session_state.plan_view = "overall"
-with c2:
-    if st.button("🏢 แสดง: รายจ่ายประจำ", use_container_width=True):
-        st.session_state.plan_view = "reg"
-with c3:
-    if st.button("🏗️ แสดง: รายจ่ายลงทุน", use_container_width=True):
-        st.session_state.plan_view = "inv"
-
-# ---------- Render ตามปุ่มที่เลือก ----------
+# ---------- Render table FIRST ----------
 if st.session_state.plan_view == "overall":
     st.markdown("#### 📊 ตาราง: ภาพรวม")
     styled_table = _style_df(view_overall, mode="overall")
@@ -1116,6 +1090,23 @@ elif st.session_state.plan_view == "inv":
             file_name="integration_plans_investment.csv",
             mime="text/csv"
         )
+
+# ---------- THEN: Bottom buttons ----------
+st.markdown("<div style='height: 8px'></div>", unsafe_allow_html=True)
+c1, c2, c3 = st.columns(3)
+with c1:
+    if st.button("📊 แสดง: ภาพรวม", use_container_width=True, key="btn_overall_bottom"):
+        st.session_state.plan_view = "overall"
+        st.experimental_rerun()
+with c2:
+    if st.button("🏢 แสดง: รายจ่ายประจำ", use_container_width=True, key="btn_reg_bottom"):
+        st.session_state.plan_view = "reg"
+        st.experimental_rerun()
+with c3:
+    if st.button("🏗️ แสดง: รายจ่ายลงทุน", use_container_width=True, key="btn_inv_bottom"):
+        st.session_state.plan_view = "inv"
+        st.experimental_rerun()
+
 
 
     # ================= แผนงานย่อย (เลือกแผนงาน + Tabs) =================
@@ -1717,6 +1708,7 @@ if show_footer:
         🔹 Code writer: **กุลธิดา สมศรี (70%)** และ **ChatGPT (30%)**  
         🔹 ค่าใช้จ่าย: ระบบไม่ได้ใช้งบประมาณแผ่นดิน ค่า chatGPT ผู้เขียนโค้ดออกค่าใช้จ่ายเอง
         """)
+
 
 
 
