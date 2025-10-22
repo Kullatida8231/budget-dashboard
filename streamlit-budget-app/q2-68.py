@@ -906,14 +906,23 @@ if "4️⃣ แผนบูรณาการ" in selected_menus:
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-        # ================= ตารางสรุปตามชื่อแผนงานบูรณาการ (รวม/ประจำ/ลงทุน) =================
+       # ================= ตารางสรุปตามชื่อแผนงานบูรณาการ (รวม/ประจำ/ลงทุน) =================
     st.markdown("<hr>", unsafe_allow_html=True)
     st.markdown(
         """<div style='text-align: left; font-size: 18px; font-weight: bold; margin: 10px 0;'>
-        🔵 ตารางสรุปตามชื่อแผนงานบูรณาการ (แยก: ภาพรวม / รายจ่ายประจำ / รายจ่ายลงทุน)
+        🔵 ตารางสรุปตามชื่อแผนงานบูรณาการ (เลือกดู: ภาพรวม / รายจ่ายประจำ / รายจ่ายลงทุน)
         </div>""",
         unsafe_allow_html=True
     )
+
+    import numpy as np
+    import pandas as pd
+
+    def _safe_pct(numer, denom):
+        try:
+            return round((numer / denom) * 100, 2) if denom and denom != 0 else 0.00
+        except Exception:
+            return 0.00
 
     def _collapse(df_subset, suffix):
         """สรุปยอดตามแผนงาน แล้วเติม suffix แยกชุดคอลัมน์"""
@@ -931,61 +940,122 @@ if "4️⃣ แผนบูรณาการ" in selected_menus:
         g.fillna(0, inplace=True)
         return g
 
+    # เตรียมตารางย่อยตามมุมมอง
     df_plan_all = df_plan.copy()
     df_overall  = _collapse(df_plan_all, " (รวม)")
     df_regonly  = _collapse(df_plan_all[df_plan_all["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายประจำ"], " (ประจำ)")
     df_invonly  = _collapse(df_plan_all[df_plan_all["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายลงทุน"],  " (ลงทุน)")
 
-    plan_table = df_overall.merge(df_regonly, on="แผนงาน", how="outer").merge(df_invonly, on="แผนงาน", how="outer")
+    cols_overall = ["แผนงาน", "พรบ. (รวม)", "งบฯ หลังโอน (รวม)", "เบิกจ่าย (รวม)", "%เบิกจ่าย (รวม)", "ใช้จ่าย (รวม)", "%ใช้จ่าย (รวม)"]
+    cols_reg     = ["แผนงาน", "พรบ. (ประจำ)", "งบฯ หลังโอน (ประจำ)", "เบิกจ่าย (ประจำ)", "%เบิกจ่าย (ประจำ)", "ใช้จ่าย (ประจำ)", "%ใช้จ่าย (ประจำ)"]
+    cols_inv     = ["แผนงาน", "พรบ. (ลงทุน)", "งบฯ หลังโอน (ลงทุน)", "เบิกจ่าย (ลงทุน)", "%เบิกจ่าย (ลงทุน)", "ใช้จ่าย (ลงทุน)", "%ใช้จ่าย (ลงทุน)"]
 
-    if "งบฯ หลังโอน (รวม)" in plan_table.columns:
-        plan_table = plan_table.sort_values("งบฯ หลังโอน (รวม)", ascending=False)
+    view_overall = df_overall[[c for c in cols_overall if c in df_overall.columns]].copy()
+    view_reg     = df_regonly[[c for c in cols_reg     if c in df_regonly.columns]].copy()
+    view_inv     = df_invonly[[c for c in cols_inv     if c in df_invonly.columns]].copy()
 
-    display_cols = [
-        "แผนงาน",
-        # รวม
-        "พรบ. (รวม)", "งบฯ หลังโอน (รวม)", "เบิกจ่าย (รวม)", "%เบิกจ่าย (รวม)", "ใช้จ่าย (รวม)", "%ใช้จ่าย (รวม)",
-        # ประจำ
-        "พรบ. (ประจำ)", "งบฯ หลังโอน (ประจำ)", "เบิกจ่าย (ประจำ)", "%เบิกจ่าย (ประจำ)", "ใช้จ่าย (ประจำ)", "%ใช้จ่าย (ประจำ)",
-        # ลงทุน
-        "พรบ. (ลงทุน)", "งบฯ หลังโอน (ลงทุน)", "เบิกจ่าย (ลงทุน)", "%เบิกจ่าย (ลงทุน)", "ใช้จ่าย (ลงทุน)", "%ใช้จ่าย (ลงทุน)",
-    ]
-    display_cols = [c for c in display_cols if c in plan_table.columns]
-    table_show = plan_table[display_cols].copy()
+    # เรียงตามงบฯ หลังโอน
+    if "งบฯ หลังโอน (รวม)" in view_overall.columns:
+        view_overall = view_overall.sort_values("งบฯ หลังโอน (รวม)", ascending=False)
+    if "งบฯ หลังโอน (ประจำ)" in view_reg.columns:
+        view_reg = view_reg.sort_values("งบฯ หลังโอน (ประจำ)", ascending=False)
+    if "งบฯ หลังโอน (ลงทุน)" in view_inv.columns:
+        view_inv = view_inv.sort_values("งบฯ หลังโอน (ลงทุน)", ascending=False)
 
-    def _row_style(row):
-        styles = []
-        for col in table_show.columns:
-            style = ""
-            if col == "%เบิกจ่าย (รวม)":
-                style = "color: #00FF9F;" if row[col] >= th_overall_disb else "color: #FF4B4B;"
-            elif col == "%ใช้จ่าย (รวม)":
-                style = "color: #00FF9F;" if row[col] >= th_spend else "color: #FF4B4B;"
-            elif col == "%เบิกจ่าย (ประจำ)":
-                style = "color: #00FF9F;" if row[col] >= th_reg_disb else "color: #FF4B4B;"
-            elif col == "%ใช้จ่าย (ประจำ)":
-                style = "color: #00FF9F;" if row[col] >= th_spend else "color: #FF4B4B;"
-            elif col == "%เบิกจ่าย (ลงทุน)":
-                style = "color: #00FF9F;" if row[col] >= th_inv_disb else "color: #FF4B4B;"
-            elif col == "%ใช้จ่าย (ลงทุน)":
-                style = "color: #00FF9F;" if row[col] >= th_spend else "color: #FF4B4B;"
-            styles.append(style)
-        return styles
-
+    # ฟอร์แมต + ไฮไลต์ตามเกณฑ์
     fmt_money = "{:,.4f}"
     fmt_pct   = "{:,.2f}%"
-    fmt_dict = {col: fmt_money for col in table_show.columns if any(k in col for k in ["พรบ.", "งบฯ หลังโอน", "เบิกจ่าย", "ใช้จ่าย"])}
-    fmt_dict.update({col: fmt_pct for col in table_show.columns if "%เบิกจ่าย" in col or "%ใช้จ่าย" in col})
 
-    styled_table = table_show.style.format(fmt_dict).apply(_row_style, axis=1)
+    def _style_df(df_show, mode: str):
+        if df_show.empty:
+            return df_show.style
 
-    st.dataframe(styled_table, use_container_width=True)
-    st.download_button(
-        "⬇️ ดาวน์โหลดตารางแผนงาน (CSV)",
-        data=table_show.to_csv(index=False).encode("utf-8-sig"),
-        file_name="integration_plans_overall_recurrent_investment.csv",
-        mime="text/csv"
-    )
+        fmt_dict = {col: fmt_money for col in df_show.columns if any(k in col for k in ["พรบ.", "งบฯ หลังโอน", "เบิกจ่าย", "ใช้จ่าย"])}
+        fmt_dict.update({col: fmt_pct for col in df_show.columns if "%เบิกจ่าย" in col or "%ใช้จ่าย" in col})
+
+        def _row_style(row):
+            styles = []
+            for col in df_show.columns:
+                style = ""
+                if mode == "overall":
+                    if col == "%เบิกจ่าย (รวม)":
+                        style = "color: #00FF9F;" if row[col] >= th_overall_disb else "color: #FF4B4B;"
+                    elif col == "%ใช้จ่าย (รวม)":
+                        style = "color: #00FF9F;" if row[col] >= th_spend else "color: #FF4B4B;"
+                elif mode == "reg":
+                    if col == "%เบิกจ่าย (ประจำ)":
+                        style = "color: #00FF9F;" if row[col] >= th_reg_disb else "color: #FF4B4B;"
+                    elif col == "%ใช้จ่าย (ประจำ)":
+                        style = "color: #00FF9F;" if row[col] >= th_spend else "color: #FF4B4B;"
+                elif mode == "inv":
+                    if col == "%เบิกจ่าย (ลงทุน)":
+                        style = "color: #00FF9F;" if row[col] >= th_inv_disb else "color: #FF4B4B;"
+                    elif col == "%ใช้จ่าย (ลงทุน)":
+                        style = "color: #00FF9F;" if row[col] >= th_spend else "color: #FF4B4B;"
+                styles.append(style)
+            return styles
+
+        return df_show.style.format(fmt_dict).apply(_row_style, axis=1)
+
+    # เก็บสถานะปุ่ม (เฉพาะบล็อกนี้)
+    if "plan_view_summary" not in st.session_state:
+        st.session_state.plan_view_summary = "overall"
+
+    # แสดงตารางก่อน แล้วค่อยมีปุ่มเลือกด้านล่าง
+    if st.session_state.plan_view_summary == "overall":
+        st.markdown("#### 📊 ตาราง: ภาพรวม")
+        styled_table = _style_df(view_overall, mode="overall")
+        st.dataframe(styled_table, use_container_width=True)
+        st.download_button(
+            "⬇️ ดาวน์โหลดตาราง (ภาพรวม)",
+            data=view_overall.to_csv(index=False).encode("utf-8-sig"),
+            file_name="integration_plans_overall.csv",
+            mime="text/csv"
+        )
+
+    elif st.session_state.plan_view_summary == "reg":
+        st.markdown("#### 🏢 ตาราง: รายจ่ายประจำ")
+        if view_reg.empty:
+            st.info("ไม่มีข้อมูลรายจ่ายประจำ")
+        else:
+            styled_table = _style_df(view_reg, mode="reg")
+            st.dataframe(styled_table, use_container_width=True)
+            st.download_button(
+                "⬇️ ดาวน์โหลดตาราง (รายจ่ายประจำ)",
+                data=view_reg.to_csv(index=False).encode("utf-8-sig"),
+                file_name="integration_plans_recurrent.csv",
+                mime="text/csv"
+            )
+
+    elif st.session_state.plan_view_summary == "inv":
+        st.markdown("#### 🏗️ ตาราง: รายจ่ายลงทุน")
+        if view_inv.empty:
+            st.info("ไม่มีข้อมูลรายจ่ายลงทุน")
+        else:
+            styled_table = _style_df(view_inv, mode="inv")
+            st.dataframe(styled_table, use_container_width=True)
+            st.download_button(
+                "⬇️ ดาวน์โหลดตาราง (รายจ่ายลงทุน)",
+                data=view_inv.to_csv(index=False).encode("utf-8-sig"),
+                file_name="integration_plans_investment.csv",
+                mime="text/csv"
+            )
+
+    # ปุ่มเลือกมุมมอง (Bottom buttons)
+    st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        if st.button("📊 แสดง: ภาพรวม", use_container_width=True, key="btn_sum_overall"):
+            st.session_state.plan_view_summary = "overall"
+            st.experimental_rerun()
+    with c2:
+        if st.button("🏢 แสดง: รายจ่ายประจำ", use_container_width=True, key="btn_sum_reg"):
+            st.session_state.plan_view_summary = "reg"
+            st.experimental_rerun()
+    with c3:
+        if st.button("🏗️ แสดง: รายจ่ายลงทุน", use_container_width=True, key="btn_sum_inv"):
+            st.session_state.plan_view_summary = "inv"
+            st.experimental_rerun()
 
 
    
@@ -1570,6 +1640,7 @@ if show_footer:
         🔹 Code writer: **กุลธิดา สมศรี (70%)** และ **ChatGPT (30%)**  
         🔹 ค่าใช้จ่าย: ระบบไม่ได้ใช้งบประมาณแผ่นดิน ค่า chatGPT ผู้เขียนโค้ดออกค่าใช้จ่ายเอง
         """)
+
 
 
 
