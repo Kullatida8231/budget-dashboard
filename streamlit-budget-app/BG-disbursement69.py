@@ -131,6 +131,8 @@ st.markdown("<br>", unsafe_allow_html=True)
 
 # ส่วนหัวข้อความ
 import textwrap
+import streamlit.components.v1 as components
+
 st.markdown("""
 <div style='text-align: left; font-size: 18px; font-weight: bold; margin-bottom: 10px;'>
  🔵 มาตรการเร่งรัดการเบิกจ่ายงบประมาณและการใช้จ่ายภาครัฐ ประจำปีงบประมาณ พ.ศ. 2569 (ค่าเป้าหมาย)
@@ -218,7 +220,9 @@ th, td {
 </table>
 """)
 
-st.markdown(html_table, unsafe_allow_html=True)
+#st.markdown(html_table, unsafe_allow_html=True)
+components.html(html_table, height=420, scrolling=True)
+
 
 
 
