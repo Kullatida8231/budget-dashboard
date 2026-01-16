@@ -156,7 +156,6 @@ th, td {
 }
 </style>
 
-html_table = """
 <table>
     <tr>
         <th>รายการ</th>
