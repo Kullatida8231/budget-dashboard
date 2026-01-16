@@ -130,16 +130,13 @@ st.markdown("<br>", unsafe_allow_html=True)
 
 
 # ส่วนหัวข้อความ
-import textwrap
-import streamlit.components.v1 as components
-
 st.markdown("""
 <div style='text-align: left; font-size: 18px; font-weight: bold; margin-bottom: 10px;'>
- 🔵 มาตรการเร่งรัดการเบิกจ่ายงบประมาณและการใช้จ่ายภาครัฐ ประจำปีงบประมาณ พ.ศ. 2569 (ค่าเป้าหมาย)
+ 🔵 มาตรการเร่งรัดการเบิกจ่ายงบประมาณและการใช้จ่ายภาครัฐ ประจำปีงบประมาณ พ.ศ. 2568 (ค่าเป้าหมาย)
 </div>
 """, unsafe_allow_html=True)
 
-html_table = textwrap.dedent("""
+html_table = """
 <style>
 table {
     border-collapse: collapse;
@@ -162,67 +159,45 @@ th, td {
 <table>
     <tr>
         <th>รายการ</th>
-        <th>ต.ค.-68</th>
-        <th>พ.ย.-68</th>
-        <th class="green-text">ธ.ค.-68</th>
-        <th>ม.ค.-69</th><th>ก.พ.-69</th><th>มี.ค.-69</th>
-        <th>เม.ย.-69</th><th>พ.ค.-69</th><th>มิ.ย.-69</th>
-        <th>ก.ค.-69</th><th>ส.ค.-69</th><th>ก.ย.-69</th>
+        <th>ต.ค.-67</th><th>พ.ย.-67</th><th>ธ.ค.-67</th>
+        <th>ม.ค.-68</th><th>ก.พ.-68</th><th>มี.ค.-68</th>
+        <th>เม.ย.-68</th><th>พ.ค.-68</th><th>มิ.ย.-68</th>
+        <th>ก.ค.-68</th><th>ส.ค.-68</th><th class="green-text">ก.ย.-68</th>
     </tr>
-
     <tr>
         <td>ภาพรวม_เบิกจ่าย</td>
-        <td>11.00</td><td>22.00</td><td class="green-text">33.00</td>
-        <td>40.33</td><td>47.66</td><td>55.00</td>
-        <td>62.00</td><td>69.00</td><td>76.00</td>
-        <td>81.67</td><td>87.34</td><td>93.00</td>
+        <td>9.00</td><td>18.00</td><td>27.00</td><td>35.67</td><td>44.33</td><td>53.00</td><td>60.33</td><td>67.67</td><td>75.00</td>
+        <td>81.33</td><td>87.67</td><td class="green-text">94.00</td>
     </tr>
-
     <tr>
         <td>ภาพรวม_ใช้จ่าย</td>
-        <td>12.67</td><td>25.34</td><td class="green-text">38.00</td>
-        <td>45.67</td><td>53.34</td><td>61.00</td>
-        <td>67.67</td><td>74.34</td><td>81.00</td>
-        <td>87.33</td><td>93.66</td><td>100.00</td>
+        <td>12.33</td><td>24.67</td><td>37.00</td><td>45.00</td><td>53.00</td><td>61.00</td><td>67.33</td><td>73.67</td><td>80.00</td>
+        <td>86.67</td><td>93.33</td><td class="green-text">100.00</td>
     </tr>
-
     <tr>
         <td>ประจำ_เบิกจ่าย</td>
-        <td>12.33</td><td>24.66</td><td class="green-text">37.00</td>
-        <td>44.67</td><td>52.34</td><td>60.00</td>
-        <td>67.67</td><td>75.34</td><td>83.00</td>
-        <td>88.00</td><td>93.00</td><td>98.00</td>
+        <td>11.67</td><td>23.33</td><td>35.00</td><td>42.33</td><td>49.67</td><td>57.00</td><td>64.67</td><td>72.33</td><td>80.00</td>
+        <td>86.00</td><td>92.00</td><td class="green-text">98.00</td>
     </tr>
-
     <tr>
         <td>ประจำ_ใช้จ่าย</td>
-        <td>12.67</td><td>25.34</td><td class="green-text">38.00</td>
-        <td>45.67</td><td>53.34</td><td>61.00</td>
-        <td>68.67</td><td>76.34</td><td>84.00</td>
-        <td>89.33</td><td>94.66</td><td>100.00</td>
+        <td>12.00</td><td>24.00</td><td>36.00</td><td>43.33</td><td>50.67</td><td>58.00</td><td>65.67</td><td>73.33</td><td>81.00</td>
+        <td>87.33</td><td>93.67</td><td class="green-text">100.00</td>
     </tr>
-
     <tr>
         <td>ลงทุน_เบิกจ่าย</td>
-        <td>6.67</td><td>13.34</td><td class="green-text">20.00</td>
-        <td>26.00</td><td>32.00</td><td>38.00</td>
-        <td>43.67</td><td>49.34</td><td>55.00</td>
-        <td>61.67</td><td>68.34</td><td>75.00</td>
+        <td>5.67</td><td>11.33</td><td>17.00</td><td>23.00</td><td>29.00</td><td>35.00</td><td>41.33</td><td>47.67</td><td>54.00</td>
+        <td>62.67</td><td>71.33</td><td class="green-text">80.00</td>
     </tr>
-
     <tr>
         <td>ลงทุน_ใช้จ่าย</td>
-        <td>12.00</td><td>24.00</td><td class="green-text">36.00</td>
-        <td>43.67</td><td>51.34</td><td>59.00</td>
-        <td>62.33</td><td>65.66</td><td>69.00</td>
-        <td>79.33</td><td>89.66</td><td>100.00</td>
+        <td>13.00</td><td>26.00</td><td>39.00</td><td>48.00</td><td>57.00</td><td>66.00</td><td>69.67</td><td>73.33</td><td>77.00</td>
+        <td>84.67</td><td>92.33</td><td class="green-text">100.00</td>
     </tr>
 </table>
-""")
+"""
 
-#st.markdown(html_table, unsafe_allow_html=True)
-components.html(html_table, height=420, scrolling=True)
-
+st.markdown(html_table, unsafe_allow_html=True)
 
 
 
