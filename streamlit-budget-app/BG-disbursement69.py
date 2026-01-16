@@ -130,13 +130,14 @@ st.markdown("<br>", unsafe_allow_html=True)
 
 
 # ส่วนหัวข้อความ
+import textwrap
 st.markdown("""
 <div style='text-align: left; font-size: 18px; font-weight: bold; margin-bottom: 10px;'>
  🔵 มาตรการเร่งรัดการเบิกจ่ายงบประมาณและการใช้จ่ายภาครัฐ ประจำปีงบประมาณ พ.ศ. 2569 (ค่าเป้าหมาย)
 </div>
 """, unsafe_allow_html=True)
 
-html_table = """
+html_table = textwrap.dedent("""
 <style>
 table {
     border-collapse: collapse;
@@ -215,9 +216,10 @@ th, td {
         <td>79.33</td><td>89.66</td><td>100.00</td>
     </tr>
 </table>
-"""
+""")
 
 st.markdown(html_table, unsafe_allow_html=True)
+
 
 
 
