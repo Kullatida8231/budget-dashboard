@@ -216,7 +216,7 @@ st.markdown(html_table, unsafe_allow_html=True)
 
 st.markdown("""
 <div style='text-align: left; font-size: 14px; font-weight: normal; margin-bottom: 10px;'>
-ที่มา: หนังสือสำนักเลขาธิการคณะรัฐมนตรี ด่วนที่สุด นร 0505/ว 466 ลงวันที่ 25 ตุลาคม 2567
+ที่มา: หนังสือสำนักเลขาธิการคณะรัฐมนตรี ด่วนที่สุด นร 0505/ว 426 ลงวันที่ 24 ตุลาคม 2568
 </div>
 """, unsafe_allow_html=True)
 
