@@ -277,14 +277,14 @@ def show_metrics(data, title):
 
     # ✅ เกณฑ์สีตามกลุ่ม
     if title == "📊 ภาพรวม":
-        disb_threshold = 94
-        spend_threshold = 100
+        disb_threshold = 33
+        spend_threshold = 38
     elif title == "🏢 รายจ่ายประจำ":
-        disb_threshold = 98
-        spend_threshold = 100
+        disb_threshold = 37
+        spend_threshold = 38
     elif title == "🏗️ รายจ่ายลงทุน":
-        disb_threshold = 80
-        spend_threshold = 100
+        disb_threshold = 20
+        spend_threshold = 36
     else:
         disb_threshold = spend_threshold = 0
 
