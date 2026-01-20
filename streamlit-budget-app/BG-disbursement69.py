@@ -1569,13 +1569,13 @@ if "9️⃣ ลักษณะงาน" in selected_menus:
     tab1, tab2, tab3 = st.tabs(["📊 ภาพรวม", "🏢 รายจ่ายประจำ", "🏗️ รายจ่ายลงทุน"])
 
     with tab1:
-        show_dimension_table(df_dim, disb_thres=94, spend_thres=100, category="ภาพรวม")
+        show_dimension_table(df_dim, disb_thres=33, spend_thres=38, category="ภาพรวม")
 
     with tab2:
-        show_dimension_table(df_dim_reg, disb_thres=98, spend_thres=100, category="รายจ่ายประจำ")
+        show_dimension_table(df_dim_reg, disb_thres=37, spend_thres=38, category="รายจ่ายประจำ")
 
     with tab3:
-        show_dimension_table(df_dim_inv, disb_thres=80, spend_thres=100, category="รายจ่ายลงทุน")
+        show_dimension_table(df_dim_inv, disb_thres=20, spend_thres=36, category="รายจ่ายลงทุน")
 
 
 #--------------------------------------------------------------
