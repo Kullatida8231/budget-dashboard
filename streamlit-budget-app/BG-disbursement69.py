@@ -826,23 +826,23 @@ if "3️⃣ งบกลาง" in selected_menus:
 ใช้จ่าย: **{total_spend:,.4f}** | <span style='color:{color_spend_text}; font-weight:bold;'>%ใช้จ่าย: {percent_spend:.2f}%</span>
 """, unsafe_allow_html=True)
 
-    # 🔹 Tabs สำหรับตาราง
+    # 🔹 Tabs สำหรับตาราง 🟥🟥🟥
     tab1, tab2, tab3 = st.tabs(["📊 ภาพรวม", "🏢 รายจ่ายประจำ", "🏗️ รายจ่ายลงทุน"])
 
     with tab1:
-        show_central_table(df_central, disb_thres=94, spend_thres=100)
+        show_central_table(df_central, disb_thres=33, spend_thres=38)
 
     with tab2:
         df_central_reg = df_central[df_central["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายประจำ"]
         if not df_central_reg.empty:
-            show_central_table(df_central_reg, disb_thres=98, spend_thres=100)
+            show_central_table(df_central_reg, disb_thres=37, spend_thres=38)
         else:
             st.info("ไม่มีข้อมูลสำหรับรายจ่ายประจำ")
 
     with tab3:
         df_central_inv = df_central[df_central["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายลงทุน"]
         if not df_central_inv.empty:
-            show_central_table(df_central_inv, disb_thres=80, spend_thres=100)
+            show_central_table(df_central_inv, disb_thres=20, spend_thres=36)
         else:
             st.info("ไม่มีข้อมูลสำหรับรายจ่ายลงทุน")
 
