@@ -1290,23 +1290,23 @@ if "6️⃣ หน่วยงานของรัฐสภา" in selected_men
     # ✅ Tabs สำหรับตาราง
     tab1, tab2, tab3 = st.tabs(["📊 ภาพรวม", "🏢 รายจ่ายประจำ", "🏗️ รายจ่ายลงทุน"])
 
-    # 📊 Tab 1: ภาพรวม
+    # 📊 Tab 1: ภาพรวม 🟥🟥🟥
     with tab1:
-        show_parliament_table(df_selected, disb_thres=94, spend_thres=100)
+        show_parliament_table(df_selected, disb_thres=33, spend_thres=38)
 
-    # 🏢 Tab 2: รายจ่ายประจำ
+    # 🏢 Tab 2: รายจ่ายประจำ 🟥🟥🟥
     with tab2:
         df_par_reg = df_selected[df_selected["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายประจำ"]
         if not df_par_reg.empty:
-            show_parliament_table(df_par_reg, disb_thres=98, spend_thres=100)
+            show_parliament_table(df_par_reg, disb_thres=37, spend_thres=38)
         else:
             st.info("ไม่มีข้อมูลรายจ่ายประจำ")
 
-    # 🏗️ Tab 3: รายจ่ายลงทุน
+    # 🏗️ Tab 3: รายจ่ายลงทุน 🟥🟥🟥
     with tab3:
         df_par_inv = df_selected[df_selected["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายลงทุน"]
         if not df_par_inv.empty:
-            show_parliament_table(df_par_inv, disb_thres=80, spend_thres=100)
+            show_parliament_table(df_par_inv, disb_thres=20, spend_thres=36)
         else:
             st.info("ไม่มีข้อมูลรายจ่ายลงทุน")
 
@@ -1409,23 +1409,23 @@ if "7️⃣ ผลผลิต/โครงการ (ค้นหาชื่�
     # ✅ Tabs สำหรับตาราง
     tab1, tab2, tab3 = st.tabs(["📊 ภาพรวม", "🏢 รายจ่ายประจำ", "🏗️ รายจ่ายลงทุน"])
 
-    # 📊 Tab 1: ภาพรวม
+    # 📊 Tab 1: ภาพรวม 🟥🟥🟥
     with tab1:
-        show_project_table(df_project, disb_thres=94, spend_thres=100)
+        show_project_table(df_project, disb_thres=33, spend_thres=38)
 
-    # 🏢 Tab 2: รายจ่ายประจำ
+    # 🏢 Tab 2: รายจ่ายประจำ 🟥🟥🟥
     with tab2:
         df_reg = df_project[df_project["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายประจำ"]
         if not df_reg.empty:
-            show_project_table(df_reg, disb_thres=98, spend_thres=100)
+            show_project_table(df_reg, disb_thres=37, spend_thres=38)
         else:
             st.info("ไม่มีข้อมูลรายจ่ายประจำ")
 
-    # 🏗️ Tab 3: รายจ่ายลงทุน
+    # 🏗️ Tab 3: รายจ่ายลงทุน 🟥🟥🟥
     with tab3:
         df_inv = df_project[df_project["รายจ่ายประจำ/ลงทุน"] == "รายจ่ายลงทุน"]
         if not df_inv.empty:
-            show_project_table(df_inv, disb_thres=80, spend_thres=100)
+            show_project_table(df_inv, disb_thres=20, spend_thres=36)
         else:
             st.info("ไม่มีข้อมูลรายจ่ายลงทุน")
 
