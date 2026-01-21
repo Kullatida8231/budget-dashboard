@@ -80,7 +80,7 @@ st.markdown("""
         font-weight: 600;
     }
     </style>
-    <div class='header-main'>(⚠️ อยู่ระหว่างปรับปรุง)ผลการเบิกจ่ายงบประมาณและการใช้จ่ายภาครัฐ ณ สิ้นสุดไตรมาสที่ 1 ปีงบประมาณ พ.ศ. 2569</div>
+    <div class='header-main'>ผลการเบิกจ่ายงบประมาณและการใช้จ่ายภาครัฐ ณ สิ้นสุดไตรมาสที่ 1 ปีงบประมาณ พ.ศ. 2569</div>
 """, unsafe_allow_html=True)
 #-----------------------------
 
@@ -118,7 +118,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 st.markdown("""
 <div style='text-align: left; font-size: 14px; font-weight: normal; margin-bottom: 10px;'>
-3. ใช้จ่าย คือ มูลค่าการเบิกจ่ายทั้งสิ้นรวม PO รวมสำรองเงินแบบมีหนี้ (เบิกจ่าย+PO+สำรองเงินแบบมีหนี้)
+3. ใช้จ่าย คือ มูลค่าการเบิกจ่ายทั้งสิ้น รวม PO รวมสำรองเงินแบบมีหนี้ (เบิกจ่าย+PO+สำรองเงินแบบมีหนี้)
 </div>
 """, unsafe_allow_html=True)
 st.markdown("""
