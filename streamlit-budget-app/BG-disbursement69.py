@@ -160,7 +160,7 @@ th, td {
     <tr>
         <th>รายการ</th>
         <th>ต.ค.-68</th><th>พ.ย.-68</th><th>ธ.ค.-68</th>
-        <th>ม.ค.-69</th><th>ก.พ.-69</th><thclass="green-text">มี.ค.-69</th>
+        <th class="green-text">ม.ค.-69</th><th>ก.พ.-69</th><th>มี.ค.-69</th>
         <th>เม.ย.-69</th><th>พ.ค.-69</th><th>มิ.ย.-69</th>
         <th>ก.ค.-69</th><th>ส.ค.-69</th><th>ก.ย.-69</th>
     </tr>
