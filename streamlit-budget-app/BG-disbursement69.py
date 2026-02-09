@@ -159,15 +159,15 @@ th, td {
 <table>
     <tr>
         <th>รายการ</th>
-        <th>ต.ค.-68</th><th>พ.ย.-68</th><th class="green-text">ธ.ค.-68</th>
-        <th>ม.ค.-69</th><th>ก.พ.-69</th><th>มี.ค.-69</th>
+        <th>ต.ค.-68</th><th>พ.ย.-68</th><th>ธ.ค.-68</th>
+        <th>ม.ค.-69</th><th>ก.พ.-69</th><thclass="green-text">มี.ค.-69</th>
         <th>เม.ย.-69</th><th>พ.ค.-69</th><th>มิ.ย.-69</th>
         <th>ก.ค.-69</th><th>ส.ค.-69</th><th>ก.ย.-69</th>
     </tr>
     <tr>
         <td>ภาพรวม_เบิกจ่าย</td>
-        <td>11.00</td><td>22.00</td><td class="green-text">33.00</td>
-        <td>40.33</td><td>47.66</td><td>55.00</td>
+        <td>11.00</td><td>22.00</td><td >33.00</td>
+        <td>40.33</td><td>47.66</td><td class="green-text">55.00</td>
         <td>62.00</td><td>69.00</td><td>76.00</td>
         <td>81.67</td><td>87.34</td><td>93.00</td>
     </tr>
