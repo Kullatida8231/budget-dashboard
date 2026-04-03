@@ -80,7 +80,7 @@ st.markdown("""
         font-weight: 600;
     }
     </style>
-    <div class='header-main'>ผลการเบิกจ่ายงบประมาณและการใช้จ่ายภาครัฐ ณ สิ้นสุดเดือนกุมภาพันธ์ ปีงบประมาณ พ.ศ. 2569</div>
+    <div class='header-main'>🥵🥵🥵ผลการเบิกจ่ายงบประมาณและการใช้จ่ายภาครัฐ ณ สิ้นสุดเดือนกุมภาพันธ์ ปีงบประมาณ พ.ศ. 2569</div>
 """, unsafe_allow_html=True)
 #-----------------------------
 
@@ -128,7 +128,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True)
 
-
+#**************************************************
+#**************************************************
 # ส่วนหัวข้อความ
 st.markdown("""
 <div style='text-align: left; font-size: 18px; font-weight: bold; margin-bottom: 10px;'>
@@ -136,86 +137,51 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-html_table = """
-<style>
-table {
-    border-collapse: collapse;
-    width: 100%;
-    font-size: 16px;
-    margin: auto;
-    text-align: center;
-}
-th, td {
-    border: 1px solid black;
-    padding: 8px;
-    vertical-align: middle;
-}
-.green-text {
-    color: green;
-    font-weight: bold;
-}
-</style>
+# ─── สร้างตารางจาก MONTHLY_THRESHOLDS อัตโนมัติ ───
+months = list(MONTHLY_THRESHOLDS.keys())
 
-<table>
-    <tr>
-        <th>รายการ</th>
-        <th>ต.ค.-68</th><th>พ.ย.-68</th><th>ธ.ค.-68</th>
-        <th>ม.ค.-69</th><th class="green-text">ก.พ.-69</th><th>มี.ค.-69</th>
-        <th>เม.ย.-69</th><th>พ.ค.-69</th><th>มิ.ย.-69</th>
-        <th>ก.ค.-69</th><th>ส.ค.-69</th><th>ก.ย.-69</th>
-    </tr>
-    <tr>
-        <td>ภาพรวม_เบิกจ่าย</td>
-        <td>11.00</td><td>22.00</td><td >33.00</td>
-        <td>40.33</td><td class="green-text">47.66</td><td>55.00</td>
-        <td>62.00</td><td>69.00</td><td>76.00</td>
-        <td>81.67</td><td>87.34</td><td>93.00</td>
-    </tr>
-    <tr>
-        <td>ภาพรวม_ใช้จ่าย</td>
-        <td>12.67</td><td>25.34</td><td>38.00</td>
-        <td>45.67</td><td class="green-text">53.34</td><td>61.00</td>
-        <td>67.67</td><td>74.34</td><td>81.00</td>
-        <td>87.33</td><td>93.66</td><td>100.00</td>
-    </tr>
-    <tr>
-        <td>ประจำ_เบิกจ่าย</td>
-        <td>12.33</td><td>24.66</td><td>37.00</td>
-        <td>44.67</td><td class="green-text">52.34</td><td>60.00</td>
-        <td>67.67</td><td>75.34</td><td>83.00</td>
-        <td>88.00</td><td>93.00</td><td>98.00</td>
-    </tr>
-    <tr>
-        <td>ประจำ_ใช้จ่าย</td>
-        <td>12.67</td><td>25.34</td><td>38.00</td>
-        <td>45.67</td><td class="green-text">53.34</td><td>61.00</td>
-        <td>68.67</td><td>76.34</td><td>84.00</td>
-        <td>89.33</td><td>94.66</td><td>100.00</td>
-    </tr>
-    <tr>
-        <td>ลงทุน_เบิกจ่าย</td>
-        <td>6.67</td><td>13.34</td><td>20.00</td>
-        <td>26.00</td><td class="green-text">32.00</td><td>38.00</td>
-        <td>43.67</td><td>49.34</td><td>55.00</td>
-        <td>61.67</td><td>68.34</td><td>75.00</td>
-    </tr>
-    <tr>
-        <td>ลงทุน_ใช้จ่าย</td>
-        <td>112.00</td><td>24.00</td><td>36.00</td>
-        <td>43.67</td><td class="green-text">51.34</td><td>59.00</td>
-        <td>62.33</td><td>65.66</td><td>69.00</td>
-        <td>79.33</td><td>89.66</td><td>100.00</td>
-    </tr>
-</table>
+rows = {
+    "ภาพรวม_เบิกจ่าย":  [(m, MONTHLY_THRESHOLDS[m]["ภาพรวม"]["เบิกจ่าย"])  for m in months],
+    "ภาพรวม_ใช้จ่าย":   [(m, MONTHLY_THRESHOLDS[m]["ภาพรวม"]["ใช้จ่าย"])   for m in months],
+    "ประจำ_เบิกจ่าย":   [(m, MONTHLY_THRESHOLDS[m]["รายจ่ายประจำ"]["เบิกจ่าย"]) for m in months],
+    "ประจำ_ใช้จ่าย":    [(m, MONTHLY_THRESHOLDS[m]["รายจ่ายประจำ"]["ใช้จ่าย"])  for m in months],
+    "ลงทุน_เบิกจ่าย":  [(m, MONTHLY_THRESHOLDS[m]["รายจ่ายลงทุน"]["เบิกจ่าย"]) for m in months],
+    "ลงทุน_ใช้จ่าย":   [(m, MONTHLY_THRESHOLDS[m]["รายจ่ายลงทุน"]["ใช้จ่าย"])  for m in months],
+}
+
+def _th(month):
+    cls = ' class="green-text"' if month == CURRENT_MONTH else ""
+    return f"<th{cls}>{month}</th>"
+
+def _td(month, value):
+    cls = ' class="green-text"' if month == CURRENT_MONTH else ""
+    return f"<td{cls}>{value}</td>"
+
+header_row = "<tr><th>รายการ</th>" + "".join(_th(m) for m in months) + "</tr>"
+data_rows  = "".join(
+    "<tr><td>" + label + "</td>" + "".join(_td(m, v) for m, v in cells) + "</tr>"
+    for label, cells in rows.items()
+)
+
+html_table = f"""
+<style>
+table {{ border-collapse: collapse; width: 100%; font-size: 16px; margin: auto; text-align: center; }}
+th, td {{ border: 1px solid black; padding: 8px; vertical-align: middle; }}
+.green-text {{ color: green; font-weight: bold; }}
+</style>
+<table>{header_row}{data_rows}</table>
 """
 
 st.markdown(html_table, unsafe_allow_html=True)
-
 st.markdown("""
 <div style='text-align: left; font-size: 14px; font-weight: normal; margin-bottom: 10px;'>
 ที่มา: หนังสือสำนักเลขาธิการคณะรัฐมนตรี ด่วนที่สุด นร 0505/ว 426 ลงวันที่ 24 ตุลาคม 2568
 </div>
 """, unsafe_allow_html=True)
+
+
+#**************************************************
+#**************************************************
 
 st.markdown("""
 <div style='text-align: left; font-size: 14px; font-weight: normal; margin-bottom: 10px;'>
