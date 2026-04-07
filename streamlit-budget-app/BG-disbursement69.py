@@ -32,7 +32,7 @@ selected_menus = st.sidebar.multiselect("📌 เลือกหัวข้อ 
 # โหลดข้อมูล
 @st.cache_data
 def load_data():
-    file_path = "q2-69 Feb.xlsx"
+    file_path = "q2-69 Mar.xlsx"                                        # 💛💛💛
     df = pd.read_excel(file_path, dtype=str, engine="openpyxl")
     num_cols = ["พรบ.", "งบฯ หลังโอน", "เบิกจ่าย", "%เบิกจ่าย", "ใช้จ่าย", "%ใช้จ่าย"]
     df[num_cols] = df[num_cols].apply(pd.to_numeric, errors='coerce')
@@ -51,7 +51,7 @@ if df.empty:
 # 🎯 ค่าเป้าหมายรายเดือน — เปลี่ยนแค่ CURRENT_MONTH บรรทัดเดียว
 #    เพื่ออัปเดตสี threshold และตารางค่าเป้าหมายทั่วทั้งระบบ
 # ══════════════════════════════════════════════════════════════
-CURRENT_MONTH = "มี.ค.-69"
+CURRENT_MONTH = "มี.ค.-69"                                                # 💛💛💛
 
 MONTHLY_THRESHOLDS = {
     "ต.ค.-68": {"ภาพรวม": {"เบิกจ่าย": 11.00, "ใช้จ่าย": 12.67}, "รายจ่ายประจำ": {"เบิกจ่าย": 12.33, "ใช้จ่าย": 12.67}, "รายจ่ายลงทุน": {"เบิกจ่าย":  6.67, "ใช้จ่าย": 112.00}},
@@ -103,7 +103,7 @@ st.markdown("""
         font-weight: 600;
     }
     </style>
-    <div class='header-main'> ผลการเบิกจ่ายงบประมาณและการใช้จ่ายภาครัฐ ณ สิ้นสุดเดือนกุมภาพันธ์ ปีงบประมาณ พ.ศ. 2569</div>
+    <div class='header-main'> 😍😍😍ผลการเบิกจ่ายงบประมาณและการใช้จ่ายภาครัฐ ณ สิ้นสุดเดือนกุมภาพันธ์ ปีงบประมาณ พ.ศ. 2569</div>
 """, unsafe_allow_html=True)
 #-----------------------------
 
