@@ -121,12 +121,14 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+st.markdown("<br>", unsafe_allow_html=True)
+
 st.markdown(
     """
     <div style="text-align: right;">
         <a href="https://docs.google.com/forms/d/1Kt45668xXpCx07o_k_VuSK3uG7YejpQfyKhNIuOry8M/edit" target="_blank">
-            <div style="display:inline-block; padding:0.3em 1em; background-color:#4CAF50; color:white; border-radius:8px; text-decoration:none; font-weight:normal;">
-                หากระบบขึ้นรูปอีโมจินอนหลับ ให้คลิกที่กล่องสีฟ้า "Yes, get this app back up!"
+            <div style="display:inline-block; padding:0.3em 1em; background-color:#427AB5; color:white; border-radius:8px; text-decoration:none; font-weight:normal;">
+                หากระบบขึ้นรูปอีโมจินอนหลับ 😴 ให้คลิกที่กล่องสีฟ้า "Yes, get this app back up!"
             </div>
         </a>
     </div>
